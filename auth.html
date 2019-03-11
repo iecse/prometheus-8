@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>Page Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" type="text/css" media="screen" href="css/auth.css" />
+    <script src="js/auth.js"></script>
+  </head>
+  <body>
+    <div id="auth" class="login-active">
+      <div id="login-box" class="auth-half">
+        <div id="login-container">
+          <div class="heading">
+            Sign in to be a part of Prometheus
+          </div>
+          <form class="form">
+            <input type="text" placeholder="Email" />
+            <input type="password" placeholder="Password" />
+            <button class="button solid">SIGN IN</button>
+          </form>
+        </div>
+      </div>
+      <div id="register-box" class="auth-half">
+        <div id="register-container">
+          <div class="heading">
+            Create an Account
+          </div>
+          <form class="form">
+            <input type="text" name="name" placeholder="Name" />
+            <input type="text" name="email" placeholder="Email" />
+            <input type="password" name="password" placeholder="Password" />
+            <input type="text" name="tel" placeholder="Mobile" />
+            <button class="button solid">SIGN UP</button>
+          </form>
+        </div>
+      </div>
+      <div id="auth-details">
+        <div class="auth-detail signin">
+          <div class="title">HELLO</div>
+          <div class="message">
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Possimus
+            accusantium veniam ut quis at natus eum dignissimos sit repellendus
+            incidunt, dolores porro nesciunt aut eveniet, adipisci itaque modi
+            praesentium exercitationem.
+          </div>
+          <div class="message-mobile">
+            Already have an account?
+          </div>
+          <div>
+            <button class="button" onclick="changeAuth()">SIGN IN</button>
+          </div>
+        </div>
+        <div class="auth-detail signup">
+          <div class="title">HELLO</div>
+          <div class="message">
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Possimus
+            accusantium veniam ut quis at natus eum dignissimos sit repellendus
+            incidunt, dolores porro nesciunt aut eveniet, adipisci itaque modi
+            praesentium exercitationem.
+          </div>
+          <div class="message-mobile">
+            Don't have an account?
+          </div>
+          <div>
+            <button class="button" onclick="changeAuth()">SIGN UP</button>
+          </div>
+        </div>
+        <script>
+          window.location.href.includes("signup") ? changeAuth() : null;
+        </script>
+      </div>
+    </div>
+  </body>
+</html>

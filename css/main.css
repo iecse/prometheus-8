@@ -1,0 +1,309 @@
+/* @import url("https://fonts.googleapis.com/css?family=Cinzel+Decorative|Quicksand"); */
+@import url("https://fonts.googleapis.com/css?family=Quicksand");
+
+@font-face {
+  font-family: "Nebulous";
+  src: local("Nebulous"), url("/fonts/Nebulous-Regular.ttf") format("truetype");
+}
+
+body {
+  margin: 0;
+  font-family: "Quicksand", sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+button {
+  font-family: inherit;
+  font-size: inherit;
+  border: none;
+  cursor: pointer;
+}
+
+.center-flex {
+  display: flex;
+  justify-content: center;
+  align-self: center;
+  flex-direction: column;
+  text-align: center;
+}
+
+.flex {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.full-page {
+  min-height: 100vh;
+}
+
+.heading {
+  padding: 30px 0;
+}
+
+.event-list {
+  color: white;
+  width: 70%;
+  margin: 0 15%;
+  text-align: center;
+}
+
+.event-list > div {
+  flex-direction: column;
+}
+
+section:nth-child(odd) {
+  background: #eee;
+}
+
+.space-around {
+  justify-content: space-around;
+  align-items: center;
+}
+
+.two-col-grid > div {
+  width: 50%;
+  display: flex;
+  justify-content: center;
+}
+
+.spaced-children > div {
+  padding: 30px;
+}
+
+h2.tag-line {
+  font-family: "Cinzel Decorative", cursive;
+}
+
+h2 {
+  font-family: "Nebulous", sans-serif;
+  font-size: 3rem;
+  margin: 20px;
+}
+
+h1 {
+  font-family: "Nebulous", sans-serif;
+  font-size: 5rem;
+  margin-bottom: 0px;
+}
+
+.syndicate-icon {
+  width: 20%;
+  margin-left: 60px;
+  text-align: center;
+  font-size: 90px;
+  line-height: 100px;
+}
+
+.syndicate-icon img {
+  width: 100%;
+  max-width: 350px;
+}
+
+.join-us {
+  position: relative;
+  background: black;
+  color: white;
+}
+
+.side {
+  padding: 60px;
+  width: 60%;
+}
+
+.join-us .content {
+  margin: 20px 0px;
+}
+
+.join-us button {
+  padding: 10px 20px;
+  background: white;
+  border: none;
+  font-weight: bold;
+  border-radius: 1px;
+}
+
+@media only screen and (max-width: 900px) {
+
+  h1 {
+    font-size: 3rem;
+  }
+  
+  .join-us h1 {
+    margin: 0px;
+  }
+  
+  h2 {
+    font-size: 2rem;
+  }
+
+  .event-list {
+    width: 100%;
+    margin: 0;
+  }
+
+  .side {
+    padding: 0px 30px;
+    width: 100%;
+  }
+
+  .syndicate-icon {
+    width: 50%;
+    margin: 70px 25% 20px;
+  }
+
+  .join-us {
+    align-items: flex-start;
+    justify-content: flex-start;
+    padding-bottom: 20px;
+  }
+
+}
+
+@media only screen and (max-width: 700px) {
+  .two-col-grid > div {
+    width: 100%;
+  }
+
+  .spaced-children > div {
+    padding: 30px 0;
+  }
+
+  .syndicate-icon {
+    
+    font-size: 40px;
+    line-height: 50px;
+  }
+}
+
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  background-color: rgba(245, 245, 245, 0.9);
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+  background-color: rgba(245, 245, 245, 0.9);
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: rgba(10, 10, 10, 0.8);
+}
+
+.iecse-logo {
+  height: 300px;
+  width: 300px;
+}
+
+#landing {
+  overflow: hidden;
+  background-image: url('/images/landing.gif');
+  color: #eee;
+  background-size: cover;
+}
+
+.overlay {
+  padding: 20px;
+  min-height: 100vh;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.1);
+  background-image: radial-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.2));
+}
+
+#events {
+  background: black;
+  color: white;
+}
+
+.prom-logo {
+  height: 400px;
+  /* filter: drop-shadow(0px 0px 10px #ffffff); */
+}
+
+.prom-name {
+  height: 500px;
+  margin: -200px 0;
+}
+
+.event-name{
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 2rem;
+  margin: 20px;
+}
+
+.event-desc {
+  font-size: 1.2rem;
+  padding: 0 10px 40px;
+}
+
+.event-logo {
+  height: 300px;
+}
+
+.sponsor {
+  text-align: center;
+}
+
+.sponsor img {
+  width: 200px;
+  min-width: 200px;
+}
+
+#landing img {
+  max-width: 90%;
+}
+
+.sponsor-type {
+  width: 95%;
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-align: center;
+  border-top: solid thin rgba(0, 0, 0, 0.1);
+}
+
+.sponsor.large img {
+  width: 50%;
+}
+
+.made-with {
+  font-size: 1.2rem;
+}
+
+.heart {
+  font-size: 1.6rem;
+  display: inline-block;
+  color: #ea4335;
+  animation: heartbeat 1.5s infinite;
+  margin: 0 3px;
+}
+
+
+@keyframes heartbeat {
+  0% {
+    transform: translateY(3px) scale(0.9);
+  }
+  20% {
+    transform: translateY(3px) scale(1.05);
+  }
+  40% {
+    transform: translateY(3px) scale(0.9);
+  }
+  60% {
+    transform: translateY(3px) scale(1.05);
+  }
+  80% {
+    transform: translateY(3px) scale(0.9);
+  }
+  100% {
+    transform: translateY(3px) scale(0.9);
+  }
+}
+
+a {
+  text-decoration: none;
+  color: black;
+}
