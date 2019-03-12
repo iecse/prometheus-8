@@ -126,16 +126,15 @@ h1 {
 }
 
 @media only screen and (max-width: 900px) {
-
   h1 {
     font-size: 3rem;
     text-align: center;
   }
-  
+
   .join-us h1 {
     margin: 0px;
   }
-  
+
   h2 {
     font-size: 2rem;
   }
@@ -160,7 +159,6 @@ h1 {
     justify-content: flex-start;
     padding-bottom: 20px;
   }
-
 }
 
 @media only screen and (max-width: 700px) {
@@ -173,7 +171,6 @@ h1 {
   }
 
   .syndicate-icon {
-    
     font-size: 40px;
     line-height: 50px;
   }
@@ -201,7 +198,7 @@ h1 {
 
 #landing {
   overflow: hidden;
-  background-image: url('/images/landing.gif');
+  background-image: url("/images/landing.gif");
   color: #eee;
   background-size: cover;
 }
@@ -229,7 +226,7 @@ h1 {
   margin: -200px 0;
 }
 
-.event-name{
+.event-name {
   font-weight: bold;
   text-transform: uppercase;
   font-size: 2rem;
@@ -284,7 +281,6 @@ h1 {
   margin: 0 3px;
 }
 
-
 @keyframes heartbeat {
   0% {
     transform: translateY(3px) scale(0.9);
@@ -312,7 +308,9 @@ a {
 }
 
 .timeline img {
-  width: 300px;
+  min-width: 300px;
+  width: 25vw;
+  max-width: 500px;
 }
 
 .social {
