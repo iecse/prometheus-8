@@ -314,3 +314,12 @@ a {
 .timeline img {
   width: 300px;
 }
+
+.social {
+  font-size: 20px;
+  margin: 20px;
+}
+
+.social a {
+  margin: 10px;
+}
