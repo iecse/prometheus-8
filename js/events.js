@@ -21,18 +21,21 @@ var events = [
   "MysteryRoom-01.svg",
   "Negative Space-01.svg",
   "OC-01.svg"
-].map(
-  filename =>
-    new THREE.Mesh(
-      new THREE.CircleGeometry(1.2, 250),
-      new THREE.MeshFaceMaterial(
-        new THREE.MeshBasicMaterial({
-          map: new THREE.TextureLoader().load(`images/${filename}`),
-          side: THREE.DoubleSide
-        })
-      )
+].map(filename => {
+  var texture = new THREE.TextureLoader().load(`images/${filename}`);
+  texture.flipY = false;
+  var plane = new THREE.Mesh(
+    new THREE.CircleGeometry(1.3, 250),
+    new THREE.MeshFaceMaterial(
+      new THREE.MeshBasicMaterial({
+        map: texture
+      })
     )
-);
+  );
+  plane.doubleSided = true;
+  plane.scale.y = - 1;
+  return plane;
+});
 
 // var events1 = [
 //   // "Bamboozled-01.svg",
@@ -124,7 +127,11 @@ var eventDescriptions = [
   `A 3 day long nerve racking test of your competitive coding
    proficiency where you show off your skills against the top
     coders in the game`
-].map(a => a + ' Two more lines of description goes here. asdjka lsdlaksdj aslkdj asldkja sldkjas dlkajsd ');
+].map(
+  a =>
+    a +
+    " Two more lines of description goes here. asdjka lsdlaksdj aslkdj asldkja sldkjas dlkajsd "
+);
 
 loader.load("fonts/helvetiker_regular.typeface.json", function(font) {
   var materials = [
@@ -136,7 +143,7 @@ loader.load("fonts/helvetiker_regular.typeface.json", function(font) {
     var textGeometry = new THREE.TextGeometry(eventname, {
       font: font,
       size: 1,
-      height: 0.1,
+      height: 0.08,
       curveSegments: 12,
       bevelEnabled: false
       // bevelThickness: 0.01,
@@ -233,9 +240,10 @@ onload = () => {
         : null
     )
   );
-  document.querySelector(".event-desc").innerHTML = eventDescriptions[currentEvent];
+  document.querySelector(".event-desc").innerHTML =
+    eventDescriptions[currentEvent];
   document.querySelector(".event-name").innerHTML = eventNames[currentEvent];
-  document.addEventListener("click", e => spin(e.x > window.innerWidth / 2));
+  // document.addEventListener("click", e => spin(e.x > window.innerWidth / 2));
 };
 
 var currentEvent = 0;
@@ -254,6 +262,8 @@ var eventNames = [
 ];
 
 var spinnable = true;
+var firstEvent = 0,
+  lastEvent = 7;
 
 function spin(invert) {
   // setTimeout(() => spinnable = true, 2000);
@@ -286,11 +296,19 @@ function spin(invert) {
     })
     .start();
   document.querySelector(".event-name").innerHTML = eventNames[currentEvent];
-  document.querySelector(".event-desc").classList.add('invisible');
-  document.querySelector(".event-details").classList.add('invisible');
-  document.querySelector(".event-desc").innerHTML = eventDescriptions[currentEvent];
-  setTimeout(() => document.querySelector(".event-desc").classList.remove('invisible'), 200);
-  setTimeout(() => document.querySelector(".event-details").classList.remove('invisible'), 250);
+  document.querySelector(".event-desc").classList.add("invisible");
+  document.querySelector(".event-details").classList.add("invisible");
+  document.querySelector(".event-desc").innerHTML =
+    eventDescriptions[currentEvent];
+  setTimeout(
+    () => document.querySelector(".event-desc").classList.remove("invisible"),
+    200
+  );
+  setTimeout(
+    () =>
+      document.querySelector(".event-details").classList.remove("invisible"),
+    250
+  );
   // camera.lookAt(events[currentEvent].position);
 }
 
