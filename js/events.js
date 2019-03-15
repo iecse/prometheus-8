@@ -85,6 +85,8 @@ var eventDescriptions = [
     " Two more lines of description goes here. asdjka lsdlaksdj aslkdj asldkja sldkjas dlkajsd "
 );
 
+var texts = [];
+
 loader.load("fonts/helvetiker_regular.typeface.json", function(font) {
   var materials = [
     new THREE.MeshPhongMaterial({ color: 0xffffff, flatShading: true }), // front
@@ -106,6 +108,7 @@ loader.load("fonts/helvetiker_regular.typeface.json", function(font) {
     textMesh1.position.x = events[i].position.x - 16;
     textMesh1.position.y = events[i].position.y;
     textMesh1.position.z = events[i].position.z;
+    texts.push(textMesh1);
     scene.add(textMesh1);
   });
 });
@@ -181,6 +184,13 @@ onload = () => {
     eventDescriptions[currentEvent];
   document.querySelector(".event-name").innerHTML = eventNames[currentEvent];
   // document.addEventListener("click", e => spin(e.x > window.innerWidth / 2));
+
+  events[lastEvent].position.x = events[firstEvent].position.x - 25.5;
+  texts[lastEvent].position.x = texts[firstEvent].position.x - 25.5;
+  firstEvent = --firstEvent % events.length;
+  lastEvent = --lastEvent % events.length;
+  if (firstEvent < 0) firstEvent = events.length - 1;
+  if (lastEvent < 0) lastEvent = events.length - 1;
 };
 
 var currentEvent = 0;
@@ -208,12 +218,29 @@ function spin(invert) {
   // spinnable = false;
   if (invert) {
     currentEvent = ++currentEvent % events.length;
-    currentDegree = -45 * currentEvent;
+    currentDegree -= 45;
   } else {
     currentEvent = --currentEvent % events.length;
     if (currentEvent < 0) currentEvent = events.length - 1;
-    currentDegree = -45 * currentEvent;
+    currentDegree += 45;
   }
+
+  if (currentEvent === lastEvent) {
+    events[firstEvent].position.x = events[lastEvent].position.x + 25.5;
+    texts[firstEvent].position.x = texts[lastEvent].position.x + 25.5;
+    firstEvent = ++firstEvent % events.length;
+    lastEvent = ++lastEvent % events.length;
+  }
+
+  if (currentEvent === firstEvent) {
+    events[lastEvent].position.x = events[firstEvent].position.x - 25.5;
+    texts[lastEvent].position.x = texts[firstEvent].position.x - 25.5;
+    firstEvent = --firstEvent % events.length;
+    lastEvent = --lastEvent % events.length;
+    if (firstEvent < 0) firstEvent = events.length - 1;
+    if (lastEvent < 0) lastEvent = events.length - 1;
+  }
+
   document.querySelector(
     ".spinner"
   ).style.transform = `rotate(${currentDegree}deg)`;
