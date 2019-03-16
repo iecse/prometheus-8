@@ -78,7 +78,7 @@ body {
   background-image: linear-gradient(45deg, rgb(0, 194, 184), rgb(50, 140, 176));
   background-image: linear-gradient(45deg, rgb(100, 100, 100), rgb(10, 10, 10));
   background-image: linear-gradient(45deg, rgb(0, 194, 184), rgb(27, 72, 90));
-  background-image: linear-gradient(45deg, #44317A, #1C1330);
+  background-image: linear-gradient(45deg, #44317a, #1c1330);
   color: white;
   height: 100%;
 }
@@ -165,13 +165,13 @@ body {
   padding: 30px;
   font-size: 2.5rem;
   font-weight: 500;
-  color: #1C1330;
+  color: #1c1330;
 }
 
 input {
   padding: 17px 22px;
   font-size: 1.1rem;
-  color: #1C1330;
+  color: #1c1330;
   background: #f4f4f4;
   border-radius: 5px;
   border: none;
@@ -187,7 +187,7 @@ input {
 }
 
 .button.solid {
-  background: #44317A;
+  background: #44317a;
   margin-top: 20px;
 }
 
@@ -265,7 +265,6 @@ input {
     animation: m-auth-change 0.7s linear 0s 1 reverse forwards;
   }
 
-
   #register-container,
   #login-container,
   #login-box,
@@ -281,7 +280,8 @@ input {
     padding: 0 0 30px 0;
   }
 
-  .message, .title {
+  .message,
+  .title {
     display: none;
   }
 

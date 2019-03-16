@@ -41,7 +41,7 @@ canvas {
 }
 
 .dot:nth-child(even) {
-  background:  #8200c9;
+  background: #8200c9;
 }
 
 .dot:nth-child(1) {
