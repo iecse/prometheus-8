@@ -198,3 +198,141 @@ canvas {
 .profile-icon img {
   height: 70px;
 }
+
+.overlay {
+  height: 100vh;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: black;
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.overlay.active {
+  z-index: 500;
+  opacity: 0.8;
+}
+
+.modal {
+  height: 70vh;
+  width: 60%;
+  z-index: 600;
+  background: #222;
+  border-radius: 5px;
+  box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.4);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  z-index: -1;
+  transition: opacity 0.2s ease;
+}
+
+.modal.open {
+  z-index: 600;
+  opacity: 1;
+}
+
+.close {
+  position: absolute;
+  top: 0px;
+  right: 20px;
+  font-size: 40px;
+  font-weight: 500;
+  transition: color 0.2s ease;
+  cursor: pointer;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.close:hover {
+  color: white;
+}
+
+.modal-inner {
+  position: relative;
+  height: 100%;
+  width: 100%;
+}
+
+.create-team {
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 100%;
+}
+
+.create-team input {
+  background: #ddd;
+  border: none;
+  color: black;
+  font-family: inherit;
+  font-size: inherit;
+  padding: 15px;
+  margin: 15px;
+  border-radius: 5px;
+  width: 330px;
+}
+
+.create-team label {
+  font-size: 2.3rem;
+  margin: 30px;
+}
+
+.create-team button {
+  background: #444;
+  color: white;
+  border: none;
+  font-family: inherit;
+  font-size: inherit;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.team-data {
+  color: white;
+  padding: 30px;
+}
+
+.team-name {
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+.team-members {
+  width: 100%;
+  margin: 0 auto;
+}
+
+.cross {
+  font-size: 2rem;
+  color: #dd0000;
+  font-weight: 500;
+}
+
+.member {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1.2rem;
+  padding: 15px;
+}
+
+.member:not(:last-child) {
+  border-bottom: solid thin rgba(255, 255, 255, 0.1);
+}
+
+.team-btn {
+  background: #333;
+  border-radius: 5px;
+  padding: 7px 13px;
+  cursor: pointer;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+}

@@ -5,7 +5,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <title>Prometheus</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="stylesheet" type="text/css" media="screen" href="css/events.css" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      media="screen"
+      href="css/events.css"
+    />
     <script src="js/Tween.js"></script>
     <script src="js/three.js"></script>
     <!-- <script src="js/OrbitControls.js"></script> -->
@@ -13,11 +18,21 @@
     <script src="js/events.js"></script>
   </head>
   <body>
+    <style>
+      .overlay.loading {
+        z-index: 500;
+        opacity: 1;
+      }
+    </style>
+    <div class="overlay loading"></div>
     <div id="main"></div>
     <div class="event-desc"></div>
     <div class="profile-icon"><img src="/images/Logo-01.svg" /></div>
     <div class="event-details">
-      Lorem ipsum dolor sit, amet consectetur adipisicing elit. Nesciunt, laborum, doloribus nostrum magni ut ex blanditiis illo ducimus aliquid ab aut. Ipsam dolores, repellendus adipisci accusamus illo nostrum corrupti minima?
+      Lorem ipsum dolor sit, amet consectetur adipisicing elit. Nesciunt,
+      laborum, doloribus nostrum magni ut ex blanditiis illo ducimus aliquid ab
+      aut. Ipsam dolores, repellendus adipisci accusamus illo nostrum corrupti
+      minima?
       <h2 id="register-btn" class="button">REGISTER</h2>
       <div class="btn-container">
         <h2 id="join-btn" class="button half hidden">JOIN TEAM</h2>
@@ -25,6 +40,31 @@
       </div>
     </div>
     <div class="event-name"></div>
+    <div class="modal">
+      <div class="modal-inner">
+        <div class="close">&times;</div>
+        <!-- <form class="create-team">
+          <label for="team-name">Choose a team name</label>
+          <input id="team-name" type="text" name="name" autocomplete="off" placeholder="Example: Team Name" />
+          <button type="submit">Go</button>
+        </form> -->
+        <div class="team-data">
+          <div class="team-name">Team Name</div>
+          <div class="team-members">
+            <div class="member">
+              <div>Pranav Tharoor</div>
+              <!-- <div class="cross">&times;</div> -->
+              <div class="team-btn">Leave</div>
+            </div>
+            <div class="member">
+                <div>Pranav Tharoor</div>
+                <!-- <div class="cross">&times;</div> -->
+                <div class="team-btn">Leave</div>
+              </div>
+          </div>
+        </div>
+      </div>
+    </div>
     <div class="spinner-container">
       <div class="spinner">
         <div class="dot"></div>
