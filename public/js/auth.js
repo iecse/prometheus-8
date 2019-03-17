@@ -16,6 +16,7 @@ onload = () => {
     const password = document.querySelector('#reg-form input[name="password"]')
       .value;
     fetch('/api/auth/register', {
+      credentials: 'include',
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ name, email, mobile, password })
@@ -36,6 +37,7 @@ onload = () => {
       '#login-form input[name="password"]'
     ).value;
     fetch('/api/auth/login', {
+      credentials: 'include',
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password })

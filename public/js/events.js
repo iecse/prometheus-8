@@ -60,7 +60,7 @@ var eventDescriptions = [
    algorithms to defeat the Syndicate at sea and keep
     them at bay.`,
   `Think you're a code-breaker? Test your skills with
-   Cicada, an event with some of the most head 
+   Cicada, an event with some of the most head
    scratching puzzles you've ever seen. Rack your brains,
     first online and then offline in the final round.`,
   `A fast paced offline coding event where you bet on your
@@ -223,8 +223,8 @@ onload = () => {
       e.keyCode === 39 || e.keyCode === 40
         ? true
         : e.keyCode === 37 || e.keyCode === 38
-          ? false
-          : null
+        ? false
+        : null
     )
   );
   document.querySelector('.event-desc').innerHTML =
@@ -250,10 +250,32 @@ onload = () => {
     .querySelector('.overlay')
     .addEventListener('click', createTeamToggle);
   document.querySelector('.close').addEventListener('click', createTeamToggle);
-  document.querySelector('.overlay.loading').classList.remove('loading');
+  fetch('/api/init', { credentials: 'include' })
+    .then(resp => resp.json())
+    .then(data => {
+      if (!data.data.logged_in) return (window.location.href = '/auth.html');
+      eventData = data.data.events.sort(
+        (event1, event2) => event1.name > event2.name
+      );
+      userData = data.data.user_data;
+      registered = data.data.registered;
+      teams = data.data.teams;
+      teams = teams.reduce((a, c) => ({ ...a, [c.event]: c }), {});
+      eventData = eventData.map(event => ({
+        ...event,
+        registered: registered.includes(event.id),
+        team: teams[event.id]
+      }));
+      loaded = true;
+      console.log(eventData);
+      document.querySelector('.overlay.loading').classList.remove('loading');
+    });
 };
 
+var eventData = [];
+
 var currentEvent = 0;
+var loaded = false;
 
 var currentDegree = 0;
 
@@ -413,6 +435,7 @@ function profile() {
 var createTeamOpen = false;
 
 function createTeamToggle() {
+  if (!loaded) return;
   var overlay = document.querySelector('.overlay');
   var modal = document.querySelector('.modal');
   overlay.classList.toggle('active');
