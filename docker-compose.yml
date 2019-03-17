@@ -1,0 +1,62 @@
+version: '3.5'
+services:
+  api:
+    build: .
+    image: iecse/code-portal-api
+    restart: unless-stopped
+    networks:
+      - code-portal-network
+    container_name: code-portal-api
+    volumes:
+      - ./questions:/usr/src/api/questions
+    depends_on:
+      - db
+      - redis
+    environment:
+      - DB_NAME=codeportal
+      - DB_HOST=db
+      - DB_USER=user
+      - DB_PASS=password
+      - REDIS_HOST=redis
+  db:
+    build: ./db
+    image: iecse/code-portal-db
+    restart: unless-stopped
+    networks:
+      - code-portal-network
+    container_name: code-portal-db
+    volumes:
+      - db-data:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=rootpassword
+      - MYSQL_DATABASE=codeportal
+  redis:
+    image: redis
+    container_name: code-portal-redis
+    restart: unless-stopped
+    networks:
+      - code-portal-network
+    volumes:
+      - redis-data:/data
+  web:
+    build: 
+      dockerfile: ./client/Dockerfile
+      context: .
+    image: iecse/code-portal-web
+    restart: unless-stopped
+    networks:
+      - code-portal-network
+    container_name: code-portal-web
+    depends_on:
+      - api
+    ports:
+      - 6001:80
+
+networks:
+  code-portal-network:
+    driver: bridge
+    name: code-portal-network
+
+volumes:
+  db-data:
+  redis-data:
