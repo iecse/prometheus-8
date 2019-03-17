@@ -300,3 +300,39 @@ input {
     font-size: 0.9rem;
   }
 }
+
+#snackbar {
+  z-index: 20000;
+  text-align: center;
+  position: fixed;
+  bottom: -100px;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+  -ms-transform: translateX(-50%);
+  transform: translateX(-50%);
+  -webkit-transition: -webkit-transform 1s ease;
+  transition: -webkit-transform 1s ease;
+  -o-transition: transform 1s ease;
+  transition: transform 1s ease;
+  transition: transform 1s ease, -webkit-transform 1s ease;
+  padding: 10px 20px;
+  color: #fff;
+}
+
+#snackbar.success {
+  background: #00b84a;
+}
+
+#snackbar.danger {
+  background: #a94442;
+}
+
+a {
+  color: inherit;
+}
+
+#snackbar.open {
+  -webkit-transform: translate(-50%, -120px);
+  -ms-transform: translate(-50%, -120px);
+  transform: translate(-50%, -120px);
+}
