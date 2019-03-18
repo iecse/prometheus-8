@@ -45,8 +45,6 @@ events.forEach((e, i) => {
   scene.add(e);
 });
 
-var controls = new THREE.DeviceOrientationControls(camera);
-
 var ambientLight = new THREE.AmbientLight(0x999999);
 scene.add(ambientLight);
 
@@ -247,6 +245,9 @@ onload = () => {
   document.querySelector('.close').addEventListener('click', modalClose);
   document.querySelector('.create-team').addEventListener('submit', createTeam);
   document.querySelector('#team-btn').addEventListener('click', viewTeam);
+  document
+    .querySelector('#add-member-btn')
+    .addEventListener('click', addMember);
 
   init();
 };
@@ -533,9 +534,12 @@ function createTeam(e) {
 function createTeamOpen() {
   var createTeam = document.querySelector('.create-team');
   var teamData = document.querySelector('.team-data');
-  createTeam.classList.remove('hidden');
+  var qrScanner = document.querySelector('.qr-scanner');
+  qrScanner.classList.remove('hidden');
+  qrScanner.classList.add('hidden');
   teamData.classList.remove('hidden');
   teamData.classList.add('hidden');
+  createTeam.classList.remove('hidden');
   modalOpen();
 }
 
@@ -544,11 +548,14 @@ function viewTeam() {
   var createTeam = document.querySelector('.create-team');
   var addMembers = document.querySelector('.add-members');
   var teamData = document.querySelector('.team-data');
+  var qrScanner = document.querySelector('.qr-scanner');
   createTeam.classList.remove('hidden');
-  teamData.classList.remove('hidden');
-  addMembers.classList.remove('hidden');
   createTeam.classList.add('hidden');
+  qrScanner.classList.remove('hidden');
+  qrScanner.classList.add('hidden');
+  addMembers.classList.remove('hidden');
   addMembers.classList.add('hidden');
+  teamData.classList.remove('hidden');
   document.querySelector('.team-name').innerHTML = team.name;
   fetch(`/api/teams/members/${team.id}`, { credentials: 'include' })
     .then(resp => resp.json())
@@ -593,15 +600,6 @@ function leaveTeam(teamid) {
     });
 }
 
-function modalToggle() {
-  if (!loaded) return;
-  modalOpenStatus = !modalOpenStatus;
-  var overlay = document.querySelector('.overlay');
-  var modal = document.querySelector('.modal');
-  overlay.classList.toggle('active');
-  modal.classList.toggle('open');
-}
-
 function modalOpen() {
   if (!loaded) return;
   modalOpenStatus = true;
@@ -614,6 +612,7 @@ function modalOpen() {
 
 function modalClose() {
   if (!loaded) return;
+  if (scanner) scanner.stop();
   modalOpenStatus = false;
   var overlay = document.querySelector('.overlay');
   var modal = document.querySelector('.modal');
@@ -634,3 +633,42 @@ function snackbar(content, success = true) {
     document.querySelector('#snackbar').classList.remove('open');
   }, 4000);
 }
+
+function addMember() {
+  var team = eventData[currentEvent].team;
+  var createTeam = document.querySelector('.create-team');
+  var teamData = document.querySelector('.team-data');
+  var qrScanner = document.querySelector('.qr-scanner');
+  createTeam.classList.remove('hidden');
+  createTeam.classList.add('hidden');
+  teamData.classList.remove('hidden');
+  teamData.classList.add('hidden');
+  qrScanner.classList.remove('hidden');
+  scanning = true;
+
+  scanner = new Instascan.Scanner({
+    continuous: true,
+    video: document.getElementById('preview'),
+    mirror: false,
+    backgroundScan: false,
+    captureImage: false,
+    refactoryPeriod: 5000,
+    scanPeriod: 1
+  });
+
+  scanner.addListener('scan', function(content) {
+    console.log(content);
+  });
+
+  Instascan.Camera.getCameras()
+    .then(function(cameras) {
+      if (cameras.length > 0) scanner.start(cameras[cameras.length - 1]);
+      else console.error('No cameras found');
+    })
+    .catch(function(e) {
+      console.error(e);
+    });
+}
+
+var scanner;
+var scanning = false;

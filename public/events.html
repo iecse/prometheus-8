@@ -14,8 +14,7 @@
     <script src="js/qrious.min.js"></script>
     <script src="js/Tween.js"></script>
     <script src="js/three.js"></script>
-    <!-- <script src="js/OrbitControls.js"></script> -->
-    <script src="js/DeviceOrientationControls.js"></script>
+    <script src="js/instascan.min.js"></script>
     <script src="js/events.js"></script>
   </head>
   <body>
@@ -53,7 +52,10 @@
         <div class="team-data hidden">
           <div class="team-name"></div>
           <div class="team-members"></div>
-          <div class="add-members hidden"><button>Add Members</button></div>
+          <div class="add-members hidden"><button id="add-member-btn">Add Members</button></div>
+        </div>
+        <div class="qr-scanner">
+          <video playsinline="true" id="preview"></video>
         </div>
       </div>
     </div>

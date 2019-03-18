@@ -246,6 +246,7 @@ canvas {
 }
 
 .close {
+  z-index: 1000;
   position: absolute;
   top: 0px;
   right: 20px;
@@ -418,4 +419,9 @@ a {
 
 .arrow > div:last-child {
   transform: translateX(-6px) rotate(-45deg);
+}
+
+#preview {
+  height: 100%;
+  width: 100%;
 }
