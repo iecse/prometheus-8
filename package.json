@@ -24,6 +24,6 @@
   },
   "scripts": {
     "start": "node server",
-    "dev": "nodemon server"
+    "dev": "nodemon --ignore 'public/*' server"
   }
 }

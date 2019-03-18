@@ -37,6 +37,37 @@ var events = [
 
 var eventOffSet = 7;
 
+addEventListener('resize', () => {
+  configureScreen();
+});
+
+function configureScreen() {
+  let ratio = innerWidth / innerHeight;
+  console.log(ratio);
+  if (ratio > 1.45)
+    texts.forEach((text, i) => {
+      text.scale.set(1, 1, 1);
+      eventOffSet = 3.5 * ratio;
+      events[i].position.x = i * 25.5 + eventOffSet;
+      text.position.x = events[i].position.x - 8.1 * ratio;
+      events[i].scale.set(1, -1, 1);
+      scene.remove(events[i]);
+      scene.add(events[i]);
+    });
+  else
+    texts.forEach((text, i) => {
+      if (ratio < 0.6) text.scale.set(0.4, 0.4, 0.4);
+      else if (ratio < 1.1) text.scale.set(0.5, 0.5, 0.5);
+      else text.scale.set(1, 1, 1);
+      eventOffSet = 2.8 * ratio;
+      events[i].position.x = i * 25.5 + eventOffSet;
+      // events[i].position.y = 1.2;
+      scene.remove(events[i]);
+      text.position.x = events[i].position.x - 7.8 * ratio;
+      events[i].scale.set(0.5, -0.5, 0.5);
+    });
+}
+
 events.forEach((e, i) => {
   e.rotation.y -= 0.25;
   e.position.z = -7;
@@ -248,7 +279,7 @@ onload = () => {
   document
     .querySelector('#add-member-btn')
     .addEventListener('click', addMember);
-
+  configureScreen();
   init();
 };
 
@@ -590,7 +621,6 @@ function viewTeam() {
 }
 
 function leaveTeam(teamid) {
-  console.log(teamid);
   fetch(`/api/teams/leave/${teamid}`, { credentials: 'include' })
     .then(resp => resp.json())
     .then(data => {

@@ -5,6 +5,7 @@ body {
   overflow: hidden;
   font-family: "Quicksand", sans-serif;
   perspective: 2000px;
+  width: 100vw;
 
   /* background: #11e8bb;  */
   /* background: -moz-linear-gradient(top,  #11e8bb 0%, #8200c9 100%);  */
@@ -424,4 +425,115 @@ a {
 #preview {
   height: 100%;
   width: 100%;
+}
+
+@media only screen and (max-width: 1000px) and (orientation: portrait) {
+  .profile-icon, .profile-icon img {
+    height: 140px;
+    left: auto;
+    right: 20px;
+  }
+
+  * {
+    font-size: 50px !important;
+  }
+}
+
+@media only screen and (max-width: 1000px) and (orientation: landscape) {
+  * {
+    font-size: 20px !important;
+  }
+
+  .spinner-container {
+    display: none;
+  }
+}
+
+
+@media only screen and (max-width: 1000px) {
+  .spinner {
+    width: 450px;
+    height: 450px;
+  }
+  .spinner-container {
+    bottom: -250px;
+  }
+  .event-desc {
+    max-width: 90vw;
+    transform: none;
+    position: relative;
+    left: auto;
+    right: auto;
+    bottom: auto;
+    top: auto;
+    margin: 20px 5vw 20px;
+    padding: 40px;
+  }
+
+  .event-details {
+    padding: 40px;
+    max-width: 90vw;
+    width: 90wv;
+    right: 10px;
+    margin: 20px 5vw 20px;
+    transform: none;
+    position: relative;
+    left: auto;
+    right: auto;
+    bottom: auto;
+    top: auto;
+  }
+
+  .mobile {
+    position: absolute;
+    top: 35%;
+    left: 0;
+    overflow: auto;
+    height: 65vh;
+    width: 100%;
+  }
+
+  .dot:nth-child(1) {
+    top: 12.3%;
+    left: 12.3%;
+  }
+
+  .dot:nth-child(2) {
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .dot:nth-child(3) {
+    top: 12.3%;
+    right: 12.3%;
+  }
+
+  .dot:nth-child(4) {
+    top: 50%;
+    right: -10px;
+    transform: translateY(-50%);
+  }
+
+  .dot:nth-child(5) {
+    bottom: 12.3%;
+    right: 12.3%;
+  }
+
+  .dot:nth-child(6) {
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .dot:nth-child(7) {
+    bottom: 12.3%;
+    left: 12.3%;
+  }
+
+  .dot:nth-child(8) {
+    top: 50%;
+    left: -10px;
+    transform: translateY(-50%);
+  }
 }
