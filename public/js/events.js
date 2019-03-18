@@ -464,8 +464,10 @@ var profileOpen = false;
 
 var profileOpening = false;
 
+var doInit = false;
+
 function profile() {
-  if (profileOpening) return;
+  if (profileOpen) init();
   profileOpening = true;
   setTimeout(() => (profileOpening = false), 500);
   qr.position.x = camera.position.x;
@@ -656,10 +658,27 @@ function addMember() {
     scanPeriod: 1
   });
 
-  scanner.addListener('scan', function(content) {
-    console.log(content);
+  scanner.addListener('scan', function(qr) {
+    if (!scanning) return;
+    scanning = false;
+    fetch('/api/teams/members/add', {
+      method: 'POST',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ qr, team: team.id })
+    })
+      .then(resp => resp.json())
+      .then(data => {
+        snackbar(data.msg, data.success);
+        if (data.success) {
+          modalClose();
+          viewTeam();
+        }
+        scanning = true;
+      });
   });
-
   Instascan.Camera.getCameras()
     .then(function(cameras) {
       if (cameras.length > 0) scanner.start(cameras[cameras.length - 1]);
@@ -671,4 +690,4 @@ function addMember() {
 }
 
 var scanner;
-var scanning = false;
+var scanning = true;

@@ -32,6 +32,11 @@ router.post(
   events.unregister
 );
 router.post('/teams/create', validator(schemas.teams.create), teams.create);
+router.post(
+  '/teams/members/add',
+  validator(schemas.teams.addMember),
+  teams.addMember
+);
 router.get(
   '/teams/members/:teamid',
   validator(schemas.teams.members),

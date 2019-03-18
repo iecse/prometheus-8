@@ -41,65 +41,53 @@ exports.create = async (req, res) => {
 };
 
 exports.addMember = async (req, res) => {
-  let err, result;
+  let err, result, teams;
 
   [err, result] = await to(
-    db.query('SELECT id FROM registrations WHERE user = ?', [
-      req.session.key.id
-    ])
+    db.query(
+      'SELECT * FROM teams JOIN events ON events.id = teams.event JOIN team_members ON team_members.team = teams.id WHERE teams.id = ?',
+      [req.body.team]
+    )
   );
+  if (err) return res.sendError(err);
   if (result.length === 0)
-    return res.sendError(null, 'You are not registered for this event', 404);
-  if (err) return res.sendError(err);
-
-  [err, result] = await to(
-    db.query(
-      'SELECT id FROM users JOIN registrations ON users.id = registrations.user WHERE qr = ?',
-      [req.body.qr]
-    )
-  );
-  if (result.length === 0)
-    return res.sendError(null, 'User is not registered for this event', 404);
-  if (err) return res.sendError(err);
-
-  const memberId = result[0].id;
-
-  [err, result] = await to(
-    db.query(
-      'SELECT id FROM teams JOIN team_members ON teams.id = team_members.team WHERE event = ? and user = ?',
-      [req.body.event, memberId]
-    )
-  );
-  if (result.length > 0)
-    return res.sendError(null, 'User is already part of a team', 409);
-  if (err) return res.sendError(err);
-
-  [err, result] = await to(
-    db.query(
-      'SELECT id FROM teams JOIN team_members ON teams.id = team_members.team WHERE event = ? and user = ?',
-      [req.body.event, req.session.key.id]
-    )
-  );
-  if (result.length === 0) return res.sendError(null, 'Team not found', 404);
-  if (err) return res.sendError(err);
-
-  const teamMemberData = { team: result[0].id, user: memberId };
-
-  [err, result] = await to(
-    db.query(
-      'SELECT * FROM teams JOIN team_members ON teams.id = team_members.team JOIN events ON teams.event = events.id WHERE teams.id = ?',
-      [teamMemberData.team]
-    )
-  );
-  if (result.length >= 0 && result.length >= result[0].max_size)
+    return res.sendError(null, 'Team does not exit', 404);
+  const data = result[0];
+  if (result.length >= data.max_size)
     return res.sendError(null, 'Team full', 409);
-  if (err) return res.sendError(err);
+  let flag = false;
+  result.forEach(a => {
+    if (a.qr === req.body.qr) flag = true;
+  });
+  if (flag) return res.sendError(null, 'User already part of team', 409);
 
   [err, result] = await to(
-    db.query('INSERT INTO team_members SET ?', [teamMemberData])
+    db.query(
+      'SELECT * FROM users JOIN registrations ON users.id = registrations.user WHERE qr = ? and event = ?',
+      [req.body.qr, data.event]
+    )
   );
-  if (err && err.code === 'ER_DUP_ENTRY')
-    return res.sendError(err, 'User is already a part of this team', 409);
+  if (err) return res.sendError(err);
+  if (result.length === 0)
+    return res.sendError(null, 'User has not registered for this event', 404);
+  const user = result[0].id;
+
+  [err, teams] = await to(
+    db.query(
+      'SELECT * FROM teams JOIN team_members ON teams.id = team_members.team WHERE team_members.user = ?',
+      [user]
+    )
+  );
+  if (err) return res.sendError(err);
+  flag = false;
+  teams.forEach(a => {
+    if (a.event === data.event) flag = true;
+  });
+  if (flag) return res.sendError(null, 'User is a part of another team', 409);
+
+  [err, teams] = await to(
+    db.query('INSERT INTO team_members SET ?', [{ user, team: req.body.team }])
+  );
   if (err) return res.sendError(err);
 
   res.sendSuccess(null, 'Team member added');

@@ -12,6 +12,15 @@ const create = Joi.object({
   }).required()
 });
 
+const addMember = Joi.object({
+  body: Joi.object({
+    qr: Joi.string().required(),
+    team: Joi.number()
+      .integer()
+      .required()
+  }).required()
+});
+
 const members = Joi.object({
   params: Joi.object({
     teamid: Joi.number()
@@ -31,5 +40,6 @@ const leave = Joi.object({
 module.exports = {
   create,
   members,
-  leave
+  leave,
+  addMember
 };
