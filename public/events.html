@@ -31,17 +31,17 @@
     <div class="event-desc"></div>
     <div class="profile-icon"><img src="/images/Logo-01.svg" /></div>
     <div class="event-details">
-      Lorem ipsum dolor sit, amet consectetur adipisicing elit. Nesciunt,
-      laborum, doloribus nostrum magni ut ex blanditiis illo ducimus aliquid ab
-      aut. Ipsam dolores, repellendus adipisci accusamus illo nostrum corrupti
-      minima?
-      <h2 id="register-btn" class="button">REGISTER</h2>
+      <div class="detail"><strong>Team Size:</strong><div id="max-size"></div> - <div id="min-size"></div></div>
+      <h2 id="register-btn" class="button hidden">REGISTER</h2>
+      <h2 id="team-btn" class="button hidden">VIEW TEAM</h2>
       <div class="btn-container">
         <h2 id="join-btn" class="button half hidden">JOIN TEAM</h2>
         <h2 id="add-btn" class="button half hidden">CREATE TEAM</h2>
+        <h2 id="unregister-btn" class="button half hidden">UNREGISTER</h2>
       </div>
     </div>
     <div class="event-name"></div>
+    <div id="snackbar"></div>
     <div class="modal">
       <div class="modal-inner">
         <div class="close">&times;</div>
@@ -67,6 +67,7 @@
         </div>
       </div>
     </div>
+    <div id="left-arrow"><div class="arrow"><div></div><div></div></div></div>
     <div class="spinner-container">
       <div class="spinner">
         <div class="dot"></div>
@@ -79,5 +80,6 @@
         <div class="dot"></div>
       </div>
     </div>
+    <div id="right-arrow"><div class="arrow"><div></div><div></div></div></div>
   </body>
 </html>

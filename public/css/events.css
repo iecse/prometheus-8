@@ -20,7 +20,7 @@ canvas {
 }
 
 .spinner {
-  border: solid thin #ccc;
+  border: dotted 4px rgba(255, 255, 255, 0.1);
   height: 200px;
   width: 200px;
   border-radius: 50%;
@@ -45,46 +45,46 @@ canvas {
 }
 
 .dot:nth-child(1) {
-  top: 11%;
-  left: 11%;
+  top: 10.25%;
+  left: 10.25%;
 }
 
 .dot:nth-child(2) {
-  top: -7.5px;
+  top: -10px;
   left: 50%;
   transform: translateX(-50%);
 }
 
 .dot:nth-child(3) {
-  top: 11%;
-  right: 11%;
+  top: 10.25%;
+  right: 10.25%;
 }
 
 .dot:nth-child(4) {
   top: 50%;
-  right: -7.5px;
+  right: -10px;
   transform: translateY(-50%);
 }
 
 .dot:nth-child(5) {
-  bottom: 11%;
-  right: 11%;
+  bottom: 10.25%;
+  right: 10.25%;
 }
 
 .dot:nth-child(6) {
-  bottom: -7.5px;
+  bottom: -10px;
   left: 50%;
   transform: translateX(-50%);
 }
 
 .dot:nth-child(7) {
-  bottom: 11%;
-  left: 11%;
+  bottom: 10.25%;
+  left: 10.25%;
 }
 
 .dot:nth-child(8) {
   top: 50%;
-  left: -7.5px;
+  left: -10px;
   transform: translateY(-50%);
 }
 
@@ -152,7 +152,8 @@ canvas {
 }
 
 .button {
-  margin: 30px 7vw 10px;
+  min-width: 120px;
+  margin: 5px 7vw;
   padding: 10px;
   border-radius: 5px;
   text-align: center;
@@ -165,10 +166,12 @@ canvas {
 
 .half {
   display: inline-block;
-  margin: 30px auto 10px;
+  margin: 10px 20px;
 }
 
 .btn-container {
+  justify-content: space-evenly;
+  flex-wrap: wrap;
   display: flex;
 }
 
@@ -335,4 +338,68 @@ canvas {
   cursor: pointer;
   font-size: 0.7rem;
   text-transform: uppercase;
+}
+
+.detail {
+  margin-bottom: 20px;
+}
+
+.detail > div {
+  display: inline-block;
+}
+
+.detail strong {
+  margin-right: 20px;
+}
+
+#snackbar {
+  z-index: 20000;
+  text-align: center;
+  position: fixed;
+  bottom: -100px;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+  -ms-transform: translateX(-50%);
+  transform: translateX(-50%);
+  -webkit-transition: -webkit-transform 1s ease;
+  transition: -webkit-transform 1s ease;
+  -o-transition: transform 1s ease;
+  transition: transform 1s ease;
+  transition: transform 1s ease, -webkit-transform 1s ease;
+  padding: 10px 20px;
+  color: #fff;
+}
+
+#snackbar.success {
+  background: #00b84a;
+}
+
+#snackbar.danger {
+  background: #a94442;
+}
+
+a {
+  color: inherit;
+}
+
+#snackbar.open {
+  -webkit-transform: translate(-50%, -120px);
+  -ms-transform: translate(-50%, -120px);
+  transform: translate(-50%, -120px);
+}
+
+.arrow > div {
+  background: rgba(255, 255, 255, 0.7);
+  height: 5px;
+  width: 20px;
+  position: absolute;
+  bottom: 30px;
+}
+
+.arrow > div:first-child {
+  transform: translateX(6px) rotate(45deg);
+}
+
+.arrow > div:last-child {
+  transform: translateX(-6px) rotate(-45deg);
 }

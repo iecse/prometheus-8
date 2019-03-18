@@ -78,11 +78,7 @@ var eventDescriptions = [
   `A 3 day long nerve racking test of your competitive coding
    proficiency where you show off your skills against the top
     coders in the game`
-].map(
-  a =>
-    a +
-    ' Two more lines of description goes here. asdjka lsdlaksdj aslkdj asldkja sldkjas dlkajsd '
-);
+];
 
 var texts = [];
 
@@ -247,9 +243,16 @@ onload = () => {
 
   document.querySelector('#register-btn').addEventListener('click', register);
   document
+    .querySelector('#unregister-btn')
+    .addEventListener('click', unregister);
+  document
     .querySelector('.overlay')
     .addEventListener('click', createTeamToggle);
   document.querySelector('.close').addEventListener('click', createTeamToggle);
+  init();
+};
+
+function init() {
   fetch('/api/init', { credentials: 'include' })
     .then(resp => resp.json())
     .then(data => {
@@ -267,7 +270,8 @@ onload = () => {
         team: teams[event.id]
       }));
       loaded = true;
-      document.querySelector('.overlay.loading').classList.remove('loading');
+      var loadingScreen = document.querySelector('.overlay.loading');
+      if (loadingScreen) loadingScreen.classList.remove('loading');
 
       qr = new QRious({
         element: document.getElementById('qr'),
@@ -295,8 +299,10 @@ onload = () => {
       qr.position.x = 0;
       qr.position.y = 0;
       qr.position.z = -25;
+
+      populateDetails();
     });
-};
+}
 
 var qr;
 
@@ -322,6 +328,27 @@ var spinnable = true;
 var firstEvent = 0,
   lastEvent = 7;
 
+function populateDetails() {
+  var details = eventData[currentEvent];
+  var register = document.querySelector('#register-btn');
+  var unregister = document.querySelector('#unregister-btn');
+  var join = document.querySelector('#join-btn');
+  var add = document.querySelector('#add-btn');
+  var team = document.querySelector('#team-btn');
+  var btns = [register, unregister, join, add, team];
+  btns.forEach(btn => btn.classList.remove('hidden'));
+  btns.forEach(btn => btn.classList.add('hidden'));
+  document.querySelector('#max-size').innerHTML = details.max_size;
+  document.querySelector('#min-size').innerHTML = details.min_size;
+  if (details.registered) {
+    unregister.classList.remove('hidden');
+    join.classList.remove('hidden');
+    add.classList.remove('hidden');
+  } else {
+    register.classList.remove('hidden');
+  }
+}
+
 function spin(invert) {
   // setTimeout(() => spinnable = true, 2000);
   if (invert === null || !spinnable || profileOpen) return;
@@ -334,6 +361,7 @@ function spin(invert) {
     if (currentEvent < 0) currentEvent = events.length - 1;
     currentDegree += 45;
   }
+  populateDetails();
 
   if (currentEvent === lastEvent) {
     events[firstEvent].position.x = events[lastEvent].position.x + 25.5;
@@ -394,9 +422,37 @@ function showData(delay = 200, offset = 50) {
 }
 
 function register() {
-  document.querySelector('#register-btn').style.display = 'none';
-  document.querySelector('#join-btn').style.display = 'block';
-  document.querySelector('#add-btn').style.display = 'block';
+  const event = eventData[currentEvent].id;
+  fetch('/api/events/register', {
+    method: 'POST',
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ event })
+  })
+    .then(resp => resp.json())
+    .then(data => {
+      snackbar(data.msg, data.success);
+      if (data.success) init();
+    });
+}
+
+function unregister() {
+  const event = eventData[currentEvent].id;
+  fetch('/api/events/unregister', {
+    method: 'POST',
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ event })
+  })
+    .then(resp => resp.json())
+    .then(data => {
+      snackbar(data.msg, data.success);
+      if (data.success) init();
+    });
 }
 
 var profileOpen = false;
@@ -452,4 +508,18 @@ function createTeamToggle() {
   var modal = document.querySelector('.modal');
   overlay.classList.toggle('active');
   modal.classList.toggle('open');
+}
+
+function snackbar(content, success = true) {
+  if (!content) return;
+  document.querySelector('#snackbar').classList.remove('success');
+  document.querySelector('#snackbar').classList.remove('danger');
+  document.querySelector('#snackbar').innerHTML = content;
+  document.querySelector('#snackbar').classList.add('open');
+  document
+    .querySelector('#snackbar')
+    .classList.add(success ? 'success' : 'danger');
+  setTimeout(() => {
+    document.querySelector('#snackbar').classList.remove('open');
+  }, 4000);
 }
