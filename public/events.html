@@ -32,9 +32,9 @@
     <div class="profile-icon"><img src="/images/Logo-01.svg" /></div>
     <div class="event-details">
       <div class="detail"><strong>Team Size:</strong><div id="max-size"></div> - <div id="min-size"></div></div>
-      <h2 id="register-btn" class="button hidden">REGISTER</h2>
-      <h2 id="team-btn" class="button hidden">VIEW TEAM</h2>
       <div class="btn-container">
+        <h2 id="register-btn" class="button half hidden">REGISTER</h2>
+        <h2 id="team-btn" class="button half hidden">VIEW TEAM</h2>
         <h2 id="join-btn" class="button half hidden">JOIN TEAM</h2>
         <h2 id="add-btn" class="button half hidden">CREATE TEAM</h2>
         <h2 id="unregister-btn" class="button half hidden">UNREGISTER</h2>
@@ -45,25 +45,15 @@
     <div class="modal">
       <div class="modal-inner">
         <div class="close">&times;</div>
-        <!-- <form class="create-team">
+        <form class="create-team hidden">
           <label for="team-name">Choose a team name</label>
           <input id="team-name" type="text" name="name" autocomplete="off" placeholder="Example: Team Name" />
           <button type="submit">Go</button>
-        </form> -->
-        <div class="team-data">
-          <div class="team-name">Team Name</div>
-          <div class="team-members">
-            <div class="member">
-              <div>Pranav Tharoor</div>
-              <!-- <div class="cross">&times;</div> -->
-              <div class="team-btn">Leave</div>
-            </div>
-            <div class="member">
-              <div>Pranav Tharoor</div>
-              <!-- <div class="cross">&times;</div> -->
-              <div class="team-btn">Leave</div>
-            </div>
-          </div>
+        </form>
+        <div class="team-data hidden">
+          <div class="team-name"></div>
+          <div class="team-members"></div>
+          <div class="add-members hidden"><button>Add Members</button></div>
         </div>
       </div>
     </div>

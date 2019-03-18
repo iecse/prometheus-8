@@ -237,22 +237,21 @@ onload = () => {
 
   document.querySelector('.profile-icon').addEventListener('click', profile);
   document.querySelector('#join-btn').addEventListener('click', profile);
-  document
-    .querySelector('#add-btn')
-    .addEventListener('click', createTeamToggle);
+  document.querySelector('#add-btn').addEventListener('click', createTeamOpen);
 
   document.querySelector('#register-btn').addEventListener('click', register);
   document
     .querySelector('#unregister-btn')
     .addEventListener('click', unregister);
-  document
-    .querySelector('.overlay')
-    .addEventListener('click', createTeamToggle);
-  document.querySelector('.close').addEventListener('click', createTeamToggle);
+  document.querySelector('.overlay').addEventListener('click', modalClose);
+  document.querySelector('.close').addEventListener('click', modalClose);
+  document.querySelector('.create-team').addEventListener('submit', createTeam);
+  document.querySelector('#team-btn').addEventListener('click', viewTeam);
+
   init();
 };
 
-function init() {
+function init(callback = () => {}) {
   fetch('/api/init', { credentials: 'include' })
     .then(resp => resp.json())
     .then(data => {
@@ -299,7 +298,7 @@ function init() {
       qr.position.x = 0;
       qr.position.y = 0;
       qr.position.z = -25;
-
+      callback();
       populateDetails();
     });
 }
@@ -342,8 +341,13 @@ function populateDetails() {
   document.querySelector('#min-size').innerHTML = details.min_size;
   if (details.registered) {
     unregister.classList.remove('hidden');
-    join.classList.remove('hidden');
-    add.classList.remove('hidden');
+
+    if (details.team) {
+      team.classList.remove('hidden');
+    } else {
+      join.classList.remove('hidden');
+      add.classList.remove('hidden');
+    }
   } else {
     register.classList.remove('hidden');
   }
@@ -351,7 +355,7 @@ function populateDetails() {
 
 function spin(invert) {
   // setTimeout(() => spinnable = true, 2000);
-  if (invert === null || !spinnable || profileOpen) return;
+  if (invert === null || !spinnable || profileOpen || modalOpenStatus) return;
   // spinnable = false;
   if (invert) {
     currentEvent = ++currentEvent % events.length;
@@ -500,14 +504,121 @@ function profile() {
   profileOpen = !profileOpen;
 }
 
-var createTeamOpen = false;
+var modalOpenStatus = false;
 
-function createTeamToggle() {
+function createTeam(e) {
+  e.preventDefault();
+  const event = eventData[currentEvent].id;
+  const name = document.querySelector('#team-name').value;
+  if (name.length < 3) return snackbar('Choose a longer team name', false);
+  fetch('/api/teams/create', {
+    credentials: 'include',
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ event, name })
+  })
+    .then(resp => resp.json())
+    .then(data => {
+      snackbar(data.msg, data.success);
+      if (data.success) {
+        document.querySelector('.team-name').innerHTML = data.data.name;
+        document.querySelector('#team-name').value = '';
+        init(viewTeam);
+      }
+    });
+}
+
+function createTeamOpen() {
+  var createTeam = document.querySelector('.create-team');
+  var teamData = document.querySelector('.team-data');
+  createTeam.classList.remove('hidden');
+  teamData.classList.remove('hidden');
+  teamData.classList.add('hidden');
+  modalOpen();
+}
+
+function viewTeam() {
+  var team = eventData[currentEvent].team;
+  var createTeam = document.querySelector('.create-team');
+  var addMembers = document.querySelector('.add-members');
+  var teamData = document.querySelector('.team-data');
+  createTeam.classList.remove('hidden');
+  teamData.classList.remove('hidden');
+  addMembers.classList.remove('hidden');
+  createTeam.classList.add('hidden');
+  addMembers.classList.add('hidden');
+  document.querySelector('.team-name').innerHTML = team.name;
+  fetch(`/api/teams/members/${team.id}`, { credentials: 'include' })
+    .then(resp => resp.json())
+    .then(data => {
+      snackbar(data.msg, data.success);
+      if (data.success) {
+        if (data.data.length < eventData[currentEvent].max_size)
+          addMembers.classList.remove('hidden');
+        document.querySelector('.team-members').innerHTML = data.data.reduce(
+          (a, c) =>
+            a +
+            `
+          <div class="member">
+            <div>${c.name}</div>
+            <!-- <div class="cross">&times;</div> -->
+            ${
+              userData.id === c.id
+                ? `<div onclick="leaveTeam(${
+                    team.id
+                  })" class="team-btn">Leave</div>`
+                : ''
+            }
+          </div>
+          `,
+          ''
+        );
+      }
+    });
+  modalOpen();
+}
+
+function leaveTeam(teamid) {
+  console.log(teamid);
+  fetch(`/api/teams/leave/${teamid}`, { credentials: 'include' })
+    .then(resp => resp.json())
+    .then(data => {
+      snackbar(data.msg, data.success);
+      if (data.success) {
+        modalClose();
+        init();
+      }
+    });
+}
+
+function modalToggle() {
   if (!loaded) return;
+  modalOpenStatus = !modalOpenStatus;
   var overlay = document.querySelector('.overlay');
   var modal = document.querySelector('.modal');
   overlay.classList.toggle('active');
   modal.classList.toggle('open');
+}
+
+function modalOpen() {
+  if (!loaded) return;
+  modalOpenStatus = true;
+  var overlay = document.querySelector('.overlay');
+  var modal = document.querySelector('.modal');
+  if (![...overlay.classList].includes('active'))
+    overlay.classList.add('active');
+  if (![...modal.classList].includes('open')) modal.classList.add('open');
+}
+
+function modalClose() {
+  if (!loaded) return;
+  modalOpenStatus = false;
+  var overlay = document.querySelector('.overlay');
+  var modal = document.querySelector('.modal');
+  overlay.classList.remove('active');
+  modal.classList.remove('open');
 }
 
 function snackbar(content, success = true) {

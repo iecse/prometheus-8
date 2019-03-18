@@ -32,5 +32,11 @@ router.post(
   events.unregister
 );
 router.post('/teams/create', validator(schemas.teams.create), teams.create);
+router.get(
+  '/teams/members/:teamid',
+  validator(schemas.teams.members),
+  teams.members
+);
+router.get('/teams/leave/:teamid', validator(schemas.teams.leave), teams.leave);
 
 module.exports = router;

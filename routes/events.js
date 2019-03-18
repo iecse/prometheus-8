@@ -15,7 +15,19 @@ exports.register = async (req, res) => {
 };
 
 exports.unregister = async (req, res) => {
-  let [err, result] = await to(
+  let err, result;
+
+  [err, result] = await to(
+    db.query(
+      'SELECT id FROM teams JOIN team_members ON teams.id = team_members.team WHERE event = ? and user = ?',
+      [req.body.event, req.session.key.id]
+    )
+  );
+  if (result.length > 0)
+    return res.sendError(null, 'Please leave your team first', 409);
+  if (err) return res.sendError(err);
+
+  [err, result] = await to(
     db.query('DELETE FROM registrations WHERE user = ? and event = ?', [
       req.session.key.id,
       req.body.event
