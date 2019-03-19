@@ -451,6 +451,23 @@ a {
 
 
 @media only screen and (max-width: 1000px) {
+
+  .modal {
+    width: 100%;
+    height: 100vh;
+    padding: 150px 60px;
+  }
+
+  .button {
+    font-size: 30px !important;
+    padding: 20px !important;
+  }
+
+  .close {
+    transform: translateY(-50px);
+    font-size: 90px !important;
+  }
+
   .spinner {
     width: 450px;
     height: 450px;
