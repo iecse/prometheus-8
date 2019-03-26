@@ -8,7 +8,7 @@ const events = require('./events');
 const teams = require('./teams');
 
 const redirectIfLoggedIn = (req, res, next) => {
-  if (req.isAuthenticated()) return res.redirect('/home');
+  if (req.isAuthenticated()) return res.redirect('/events');
   return next();
 };
 

@@ -59,7 +59,7 @@ onload = () => {
       .then(resp => resp.json())
       .then(data => {
         snackbar(data.msg, data.success);
-        if (data.success) window.location.href = '/events.html';
+        if (data.success) window.location.href = '/events';
       });
   });
 };

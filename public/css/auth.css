@@ -143,6 +143,8 @@ body {
   font-size: 3.5rem;
   font-weight: bold;
   font-family: "Nebulous";
+  text-align: center;
+  line-height: 1.1;
 }
 
 .message {
