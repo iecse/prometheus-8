@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="stylesheet" type="text/css" media="screen" href="css/auth.css" />
     <script src="js/auth.js"></script>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
   </head>
   <body>
     <div id="auth" class="login-active">
@@ -32,6 +33,10 @@
             <input maxlength="200" required type="email" name="email" placeholder="Email" autocomplete="email" />
             <input maxlength="200" required type="text" name="mobile" placeholder="Mobile" autocomplete="tel" />
             <input maxlength="200" minlength="8" required type="password" name="password" placeholder="Password" autocomplete="off" />
+            <div id='recaptcha' class="g-recaptcha"
+              data-sitekey="6LcxF5oUAAAAAIQL_JFO-2OKgJyvNIirCCeX7Jnt"
+              data-callback="onSubmit"
+              data-size="invisible"></div>
             <button class="button solid">SIGN UP</button>
           </form>
         </div>

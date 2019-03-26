@@ -5,29 +5,43 @@ function changeAuth() {
     '#auth-details'
   ).outerHTML;
 }
+function onSubmit(token) {
+  const name = document.querySelector('#reg-form input[name="name"]').value;
+  const email = document.querySelector('#reg-form input[name="email"]').value;
+  const mobile = document.querySelector('#reg-form input[name="mobile"]')
+    .value;
+  const password = document.querySelector('#reg-form input[name="password"]')
+    .value;
+  fetch('/api/auth/register', {
+    credentials: 'include',
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ name, email, mobile, password, captcha: token })
+  })
+    .then(resp => resp.json())
+    .then(data => {
+      snackbar(data.msg, data.success);
+      if (data.success) changeAuth();
+      else grecaptcha.reset();
+
+      document.querySelector('#login-form input[name="email"]').value = email;
+      document.querySelector('#login-form input[name="password"]').focus();
+    });
+}
+
+function validate(event) {
+  event.preventDefault();
+  if (!document.getElementById('field').value) {
+    alert("You must add text to the required field");
+  } else {
+    grecaptcha.execute();
+  }
+}
 
 onload = () => {
   document.querySelector('#reg-form').addEventListener('submit', e => {
     e.preventDefault();
-    const name = document.querySelector('#reg-form input[name="name"]').value;
-    const email = document.querySelector('#reg-form input[name="email"]').value;
-    const mobile = document.querySelector('#reg-form input[name="mobile"]')
-      .value;
-    const password = document.querySelector('#reg-form input[name="password"]')
-      .value;
-    fetch('/api/auth/register', {
-      credentials: 'include',
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name, email, mobile, password })
-    })
-      .then(resp => resp.json())
-      .then(data => {
-        snackbar(data.msg, data.success);
-        if (data.success) changeAuth();
-        document.querySelector('#login-form input[name="email"]').value = email;
-        document.querySelector('#login-form input[name="password"]').focus();
-      });
+    grecaptcha.execute();
   });
   document.querySelector('#login-form').addEventListener('submit', e => {
     e.preventDefault();

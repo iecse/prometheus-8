@@ -1,4 +1,4 @@
-// const fetch = require('node-fetch');
+const fetch = require('node-fetch');
 
 const uuid = require('uuid');
 const db = require('../config/database');
@@ -8,6 +8,22 @@ const to = require('../utils/to');
 exports.register = async (req, res) => {
   let err, result, salt, password;
 
+  let captchaToken = req.body.captcha;
+  req.body.captcha = null;
+  delete req.body.captcha;
+  [err, result] = await to(fetch(`https://www.google.com/recaptcha/api/siteverify?secret=${
+    process.env.RECAPTCHA_SECRET
+    }&response=${captchaToken}`)
+  );
+  if (err) return res.sendError(err);
+
+  [err, result] = await to(result.json());
+  if (err) return res.sendError(err);
+
+  if (result.success != true) {
+    console.log(result)
+    return res.sendError(err);
+  }
   [err, salt] = await to(bcrypt.genSalt(10));
   if (err) return res.sendError(err);
 
