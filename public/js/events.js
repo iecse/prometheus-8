@@ -41,8 +41,9 @@ addEventListener('resize', () => {
   configureScreen();
 });
 
+var ratio = innerWidth / innerHeight;
+
 function configureScreen() {
-  let ratio = innerWidth / innerHeight;
   console.log(ratio);
   if (ratio > 1.45)
     texts.forEach((text, i) => {
@@ -140,7 +141,7 @@ loader.load('fonts/helvetiker_regular.typeface.json', function(font) {
 
   var userNameGeometry = new THREE.TextGeometry('Pranav Tharoor', {
     font: font,
-    size: 0.8,
+    size: (ratio / window.innerWidth) * 600,
     height: 0.2,
     curveSegments: 12,
     bevelEnabled: false
@@ -252,6 +253,12 @@ onload = () => {
         : null
     )
   );
+  document
+    .querySelector('#right-arrow')
+    .addEventListener('click', e => spin(true));
+  document
+    .querySelector('#left-arrow')
+    .addEventListener('click', e => spin(false));
   document.querySelector('.event-desc').innerHTML =
     eventDescriptions[currentEvent];
   document.querySelector('.event-name').innerHTML = eventNames[currentEvent];
@@ -287,7 +294,7 @@ function init(callback = () => {}) {
   fetch('/api/init', { credentials: 'include' })
     .then(resp => resp.json())
     .then(data => {
-      if (!data.data.logged_in) return (window.location.href = '/auth.html');
+      if (!data.data.logged_in) return (window.location.href = '/auth');
       eventData = data.data.events.sort(
         (event1, event2) => event1.name > event2.name
       );
@@ -309,7 +316,7 @@ function init(callback = () => {}) {
         value: userData.qr,
         background: 'white',
         foreground: 'black',
-        backgroundAlpha: 0.5,
+        backgroundAlpha: 1,
         foregroundAlpha: 1,
         level: 'L',
         mime: 'image/png',
