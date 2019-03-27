@@ -399,14 +399,25 @@ function populateDetails() {
   btns.forEach(btn => btn.classList.add('hidden'));
   document.querySelector('#max-size').innerHTML = details.max_size;
   document.querySelector('#min-size').innerHTML = details.min_size;
+  document.querySelector('#to-item').classList.remove('hidden');
+  document.querySelector('#max-size').classList.remove('hidden');
+
+  if (details.max_size <= 1) {
+    document.querySelector('#to-item').classList.add('hidden');
+    document.querySelector('#max-size').classList.add('hidden');
+  }
+
   if (details.registered) {
     unregister.classList.remove('hidden');
 
     if (details.team) {
       team.classList.remove('hidden');
-    } else {
+    } else if (details.max_size > 1) {
       join.classList.remove('hidden');
       add.classList.remove('hidden');
+    } else if (details.max_size <= 1) {
+      document.querySelector('#to-item').classList.add('hidden');
+      document.querySelector('#max-size').classList.add('hidden');
     }
   } else if (details.online) {
     start.classList.remove('hidden');
