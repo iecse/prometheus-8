@@ -88,13 +88,13 @@ var eventDescriptions = [
     maths and GK, it’s all about the fun.<br /><br /> <div class="details">Date - 29th March<br /> Time - 5:30PM<br /> Venue - NLH 303</div>`,
   `An offline coding event where you code efficient
    algorithms to defeat the Syndicate at sea and keep
-    them at bay.<br /><br /><div class="details"> Date - 29th March<br /> Time - 6:45PM<br /> Venue - NLH 403</div>`,
+    them at bay.<br /><br /><div class="details"> Date - 30th March<br /> Time - 6:45PM<br /> Venue - NLH 403</div>`,
   `Think you're a code-breaker? Test your skills with
    Cicada, an event with some of the most head
    scratching puzzles you've ever seen. Rack your brains,
     first online and then offline in the final round.`,
   `A fast paced offline coding event where you bet on your
-   coding skills, to rise to the top of the leaderboard. <br /><br /><div class="details"> Date - 30th March<br /> Time - 6:45PM<br /> Venue - NLH 403</div>`,
+   coding skills, to rise to the top of the leaderboard. <br /><br /><div class="details"> Date - 29th March<br /> Time - 6:45PM<br /> Venue - NLH 403</div>`,
   `A 3 day online scavenger hunt that'll test your problem
    solving skills to the extreme. It's crazy and highly
     addictive.`,
