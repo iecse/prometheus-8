@@ -142,7 +142,7 @@ function createTexts(callback) {
 
     callback();
 
-    var userNameGeometry = new THREE.TextGeometry('Pranav Tharoor', {
+    var userNameGeometry = new THREE.TextGeometry('', {
       font: font,
       size: (ratio / window.innerWidth) * 600,
       height: 0.2,
