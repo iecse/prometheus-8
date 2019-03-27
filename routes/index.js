@@ -40,7 +40,7 @@ router.get(
   auth.logout
 );
 router.get(
-  '/auth/verifyEmail',
+  '/auth/verifyUser',
   auth.verifyEmail
 );
 router.get(
