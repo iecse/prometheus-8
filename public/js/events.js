@@ -271,6 +271,7 @@ onload = () => {
   if (firstEvent < 0) firstEvent = events.length - 1;
   if (lastEvent < 0) lastEvent = events.length - 1;
 
+  document.querySelector('.home').addEventListener('click', profile);
   document.querySelector('.profile-icon').addEventListener('click', profile);
   document.querySelector('#join-btn').addEventListener('click', profile);
   document.querySelector('#add-btn').addEventListener('click', createTeamOpen);
@@ -504,6 +505,22 @@ var profileOpening = false;
 
 var doInit = false;
 
+function showBack() {
+  var logout = document.querySelector('.logout');
+  var back = document.querySelector('.home');
+  logout.classList.remove('hidden');
+  back.classList.remove('hidden');
+  logout.classList.add('hidden');
+}
+
+function showLogout() {
+  var logout = document.querySelector('.logout');
+  var back = document.querySelector('.home');
+  logout.classList.remove('hidden');
+  back.classList.remove('hidden');
+  back.classList.add('hidden');
+}
+
 function profile() {
   if (profileOpen) init();
   profileOpening = true;
@@ -514,12 +531,12 @@ function profile() {
   userName.position.x = qr.position.x - userNameBox.max.x / 2;
   userName.position.y = camera.position.y - 2;
   userName.rotation.x = -0.2;
-  if (profileOpen)
-    setTimeout(() => {
-      scene.remove(qr);
-      scene.remove(userName);
-    }, 500);
-  else {
+  if (profileOpen) {
+    // setTimeout(() => {
+    scene.remove(userName);
+    scene.remove(qr);
+    // }, 500);
+  } else {
     // console.log(userName);
     scene.add(qr);
     scene.add(userName);
@@ -532,6 +549,9 @@ function profile() {
 
   if (profileOpen) showData(0);
   else hideData();
+
+  if (profileOpen) showLogout();
+  else showBack();
 
   new TWEEN.Tween(position)
     .to(target, 500)

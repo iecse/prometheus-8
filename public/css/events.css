@@ -576,3 +576,24 @@ a {
   bottom: 30px;
   cursor: pointer;
 }
+
+.btn {
+  position: fixed;
+  right: 20px;
+  top: 20px;
+  padding: 10px;
+  border-radius: 5px;
+  text-transform: uppercase;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 400;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: #eee;
+  background: rgba(255, 255, 255, 0.1);
+  border: solid thin rgba(255, 255, 255, 0.1);
+}
+
+.btn:hover {
+  border: solid thin rgba(255, 255, 255, 0.5);
+}

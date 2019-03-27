@@ -11,9 +11,12 @@ exports.register = async (req, res) => {
   let captchaToken = req.body.captcha;
   req.body.captcha = null;
   delete req.body.captcha;
-  [err, result] = await to(fetch(`https://www.google.com/recaptcha/api/siteverify?secret=${
-    process.env.RECAPTCHA_SECRET
-    }&response=${captchaToken}`)
+  [err, result] = await to(
+    fetch(
+      `https://www.google.com/recaptcha/api/siteverify?secret=${
+        process.env.RECAPTCHA_SECRET
+      }&response=${captchaToken}`
+    )
   );
   if (err) return res.sendError(err);
 
@@ -21,7 +24,7 @@ exports.register = async (req, res) => {
   if (err) return res.sendError(err);
 
   if (result.success != true) {
-    console.log(result)
+    console.log(result);
     return res.sendError(err);
   }
   [err, salt] = await to(bcrypt.genSalt(10));
@@ -73,7 +76,7 @@ exports.login = async (req, res) => {
 exports.logout = (req, res) => {
   if (req.session.key)
     req.session.destroy(() => {
-      res.sendSuccess(null, 'Logged out');
+      res.redirect('/auth');
     });
-  else res.sendSuccess(null, 'Logged out');
+  else res.redirect('/auth');
 };
