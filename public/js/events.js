@@ -114,58 +114,62 @@ var texts = [];
 
 var userName, userNameBox;
 
-loader.load('fonts/helvetiker_regular.typeface.json', function(font) {
-  var materials = [
-    new THREE.MeshPhongMaterial({ color: 0xffffff, flatShading: true }), // front
-    new THREE.MeshPhongMaterial({ color: 0xffffff }) // side
-  ];
+function createTexts(callback) {
+  loader.load('fonts/helvetiker_regular.typeface.json', function(font) {
+    var materials = [
+      new THREE.MeshPhongMaterial({ color: 0xffffff, flatShading: true }), // front
+      new THREE.MeshPhongMaterial({ color: 0xffffff }) // side
+    ];
 
-  eventNames.forEach((eventname, i) => {
-    var textGeometry = new THREE.TextGeometry(eventname, {
+    eventNames.forEach((eventname, i) => {
+      var textGeometry = new THREE.TextGeometry(eventname, {
+        font: font,
+        size: 1,
+        height: 0.08,
+        curveSegments: 12,
+        bevelEnabled: false
+      });
+
+      var textGeo = new THREE.BufferGeometry().fromGeometry(textGeometry);
+      var textMesh1 = new THREE.Mesh(textGeo, materials);
+      textMesh1.rotation.y = 0.1;
+      textMesh1.position.x = events[i].position.x - 16;
+      textMesh1.position.y = events[i].position.y;
+      textMesh1.position.z = events[i].position.z;
+      texts.push(textMesh1);
+      scene.add(textMesh1);
+    });
+
+    callback();
+
+    var userNameGeometry = new THREE.TextGeometry('Pranav Tharoor', {
       font: font,
-      size: 1,
-      height: 0.08,
+      size: (ratio / window.innerWidth) * 600,
+      height: 0.2,
       curveSegments: 12,
       bevelEnabled: false
     });
 
-    var textGeo = new THREE.BufferGeometry().fromGeometry(textGeometry);
-    var textMesh1 = new THREE.Mesh(textGeo, materials);
-    textMesh1.rotation.y = 0.1;
-    textMesh1.position.x = events[i].position.x - 16;
-    textMesh1.position.y = events[i].position.y;
-    textMesh1.position.z = events[i].position.z;
-    texts.push(textMesh1);
-    scene.add(textMesh1);
+    var userNameMaterials = [
+      new THREE.MeshPhongMaterial({
+        color: 0xffffff,
+        flatShading: THREE.FlatShading
+      }), // front
+      new THREE.MeshPhongMaterial({
+        color: 0x550055,
+        flatShading: THREE.FlatShading
+      }) // side
+    ];
+
+    userNameGeo = new THREE.BufferGeometry().fromGeometry(userNameGeometry);
+    userName = new THREE.Mesh(userNameGeo, userNameMaterials);
+    var box = new THREE.Box3().setFromObject(userName);
+    userName.position.x = 0;
+    userName.position.y = 0;
+    userName.position.z = -25;
+    userNameBox = new THREE.Box3().setFromObject(userName);
   });
-
-  var userNameGeometry = new THREE.TextGeometry('Pranav Tharoor', {
-    font: font,
-    size: (ratio / window.innerWidth) * 600,
-    height: 0.2,
-    curveSegments: 12,
-    bevelEnabled: false
-  });
-
-  var userNameMaterials = [
-    new THREE.MeshPhongMaterial({
-      color: 0xffffff,
-      flatShading: THREE.FlatShading
-    }), // front
-    new THREE.MeshPhongMaterial({
-      color: 0x550055,
-      flatShading: THREE.FlatShading
-    }) // side
-  ];
-
-  userNameGeo = new THREE.BufferGeometry().fromGeometry(userNameGeometry);
-  userName = new THREE.Mesh(userNameGeo, userNameMaterials);
-  var box = new THREE.Box3().setFromObject(userName);
-  userName.position.x = 0;
-  userName.position.y = 0;
-  userName.position.z = -25;
-  userNameBox = new THREE.Box3().setFromObject(userName);
-});
+}
 
 var lights = [];
 lights[0] = new THREE.DirectionalLight(0xffffff, 1);
@@ -263,13 +267,14 @@ onload = () => {
     eventDescriptions[currentEvent];
   document.querySelector('.event-name').innerHTML = eventNames[currentEvent];
   // document.addEventListener("click", e => spin(e.x > window.innerWidth / 2));
-
-  events[lastEvent].position.x = events[firstEvent].position.x - 25.5;
-  texts[lastEvent].position.x = texts[firstEvent].position.x - 25.5;
-  firstEvent = --firstEvent % events.length;
-  lastEvent = --lastEvent % events.length;
-  if (firstEvent < 0) firstEvent = events.length - 1;
-  if (lastEvent < 0) lastEvent = events.length - 1;
+  createTexts(() => {
+    events[lastEvent].position.x = events[firstEvent].position.x - 25.5;
+    texts[lastEvent].position.x = texts[firstEvent].position.x - 25.5;
+    firstEvent = --firstEvent % events.length;
+    lastEvent = --lastEvent % events.length;
+    if (firstEvent < 0) firstEvent = events.length - 1;
+    if (lastEvent < 0) lastEvent = events.length - 1;
+  });
 
   document.querySelector('.home').addEventListener('click', profile);
   document.querySelector('.profile-icon').addEventListener('click', profile);

@@ -5,11 +5,11 @@ function changeAuth() {
     '#auth-details'
   ).outerHTML;
 }
+
 function onSubmit(token) {
   const name = document.querySelector('#reg-form input[name="name"]').value;
   const email = document.querySelector('#reg-form input[name="email"]').value;
-  const mobile = document.querySelector('#reg-form input[name="mobile"]')
-    .value;
+  const mobile = document.querySelector('#reg-form input[name="mobile"]').value;
   const password = document.querySelector('#reg-form input[name="password"]')
     .value;
   fetch('/api/auth/register', {
@@ -20,22 +20,14 @@ function onSubmit(token) {
   })
     .then(resp => resp.json())
     .then(data => {
+      grecaptcha.reset();
       snackbar(data.msg, data.success);
-      if (data.success) changeAuth();
-      else grecaptcha.reset();
-
+      if (!data.success) return;
+      changeAuth();
+      document.querySelector('#reg-form').reset();
       document.querySelector('#login-form input[name="email"]').value = email;
       document.querySelector('#login-form input[name="password"]').focus();
     });
-}
-
-function validate(event) {
-  event.preventDefault();
-  if (!document.getElementById('field').value) {
-    alert("You must add text to the required field");
-  } else {
-    grecaptcha.execute();
-  }
 }
 
 onload = () => {
