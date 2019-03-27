@@ -67,7 +67,7 @@ exports.register = async (req, res) => {
     return res.sendError(err);
   }
 
-  if (result.success != true) {
+  if (!result.success) {
     return res.sendError();
   }
 
