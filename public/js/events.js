@@ -142,7 +142,7 @@ function createTexts(callback) {
 
     callback();
 
-    var userNameGeometry = new THREE.TextGeometry('', {
+    var userNameGeometry = new THREE.TextGeometry(userData.name, {
       font: font,
       size: (ratio / window.innerWidth) * 600,
       height: 0.2,
@@ -271,14 +271,6 @@ onload = () => {
     eventDescriptions[currentEvent];
   document.querySelector('.event-name').innerHTML = eventNames[currentEvent];
   // document.addEventListener("click", e => spin(e.x > window.innerWidth / 2));
-  createTexts(() => {
-    events[lastEvent].position.x = events[firstEvent].position.x - 25.5;
-    texts[lastEvent].position.x = texts[firstEvent].position.x - 25.5;
-    firstEvent = --firstEvent % events.length;
-    lastEvent = --lastEvent % events.length;
-    if (firstEvent < 0) firstEvent = events.length - 1;
-    if (lastEvent < 0) lastEvent = events.length - 1;
-  });
 
   document.querySelector('.home').addEventListener('click', profile);
   document.querySelector('.profile-icon').addEventListener('click', profile);
@@ -317,9 +309,19 @@ function init(callback = () => {}) {
         registered: registered.includes(event.id),
         team: teams[event.id]
       }));
-      loaded = true;
-      var loadingScreen = document.querySelector('.overlay.loading');
-      if (loadingScreen) loadingScreen.classList.remove('loading');
+
+      createTexts(() => {
+        events[lastEvent].position.x = events[firstEvent].position.x - 25.5;
+        texts[lastEvent].position.x = texts[firstEvent].position.x - 25.5;
+        firstEvent = --firstEvent % events.length;
+        lastEvent = --lastEvent % events.length;
+        if (firstEvent < 0) firstEvent = events.length - 1;
+        if (lastEvent < 0) lastEvent = events.length - 1;
+
+        loaded = true;
+        var loadingScreen = document.querySelector('.overlay.loading');
+        if (loadingScreen) loadingScreen.classList.remove('loading');
+      });
 
       qr = new QRious({
         element: document.getElementById('qr'),
