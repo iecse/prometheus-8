@@ -8,40 +8,86 @@ const events = require('./events');
 const teams = require('./teams');
 
 const redirectIfLoggedIn = (req, res, next) => {
-  if (req.isAuthenticated()) return res.redirect('/events');
+  if (req.session.key) return res.redirect('/events');
   return next();
 };
 
 const authenticate = (req, res, next) => {
-  if (req.isAuthenticated()) return next();
-  return res.redirect('/');
+  if (req.session.key) return next();
+  return res.redirect('/auth');
 };
 
-router.post('/auth/register', validator(schemas.auth.register), auth.register);
-router.post('/auth/login', validator(schemas.auth.login), auth.login);
-router.get('/auth/logout', auth.logout);
-router.get('/init', init);
+// Check if the user's email is verified
+const userIsVerified = (req, res, next) => {
+  if (req.session.key.active !== 1)
+    return res.sendError(null, 'Please verify your Email first', 401);
+  return next();
+}
+
+router.post(
+  '/auth/register',
+  validator(schemas.auth.register),
+  auth.register
+);
+router.post(
+  '/auth/login',
+  validator(schemas.auth.login),
+  auth.login
+);
+router.get(
+  '/auth/logout',
+  authenticate,
+  auth.logout
+);
+router.get(
+  '/auth/verifyEmail',
+  auth.verifyEmail
+);
+router.get(
+  '/init',
+  authenticate,
+  init
+);
 router.post(
   '/events/register',
+  authenticate,
+  userIsVerified,
   validator(schemas.events.register),
   events.register
 );
 router.post(
   '/events/unregister',
+  authenticate,
+  userIsVerified,
   validator(schemas.events.unregister),
   events.unregister
 );
-router.post('/teams/create', validator(schemas.teams.create), teams.create);
+router.post(
+  '/teams/create',
+  authenticate,
+  userIsVerified,
+  validator(schemas.teams.create),
+  teams.create
+);
 router.post(
   '/teams/members/add',
+  authenticate,
+  userIsVerified,
   validator(schemas.teams.addMember),
   teams.addMember
 );
 router.get(
   '/teams/members/:teamid',
+  authenticate,
   validator(schemas.teams.members),
   teams.members
 );
-router.get('/teams/leave/:teamid', validator(schemas.teams.leave), teams.leave);
+router.get(
+  '/teams/leave/:teamid',
+  authenticate,
+  userIsVerified,
+  validator(schemas.teams.leave),
+  teams.leave
+);
 
 module.exports = router;

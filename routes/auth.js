@@ -1,4 +1,5 @@
 const fetch = require('node-fetch');
+const path = require('path');
 
 const uuid = require('uuid');
 const db = require('../config/database');
@@ -31,22 +32,44 @@ exports.register = async (req, res) => {
   if (err) return res.sendError(err);
 
   const qr = uuid();
-  const userData = { ...req.body, password, qr };
+  const token = uuid(); // Mailed to user for email verification
+  const userData = { ...req.body, password, qr, token };
 
   [err, result] = await to(db.query('INSERT INTO users SET ?', [userData]));
   if (err && err.code === 'ER_DUP_ENTRY')
     return res.sendError(null, 'Email alreay used', 409);
   if (err) return res.sendError(err);
 
-  res.sendSuccess(null, 'Registration complete');
+  res.sendSuccess(null, 'Registration complete, please verify your Email by following the link mailed to you');
 };
+
+exports.verifyEmail = async (req, res) => {
+  if (!req.query['token'] || !req.query['email'])
+    return res.sendError(null, 'Bad Request', 400);
+
+  [err, result] = await to(db.query('SELECT * FROM users WHERE email = ?', [req.query['email']]));
+  if (err) return res.sendError(err);
+  if (result.length === 0) return res.sendError(null, 'User not found', 404);
+
+  if (result[0].token !== req.query['token'])
+    return res.sendError(null, 'Invalid Token', 400);
+
+  [err, result] = await to(db.query('UPDATE users SET active = 1 where email = ?', [req.query['email']]));
+  if (err) return res.sendError(err);
+
+  // Modify current session to verify user
+  // while keeping them logged in and redirect
+  // to portal
+  req.session.key.active = 1;
+  res.redirect('/auth')
+}
 
 exports.login = async (req, res) => {
   let err, user, result;
 
   [err, user] = await to(
     db.query(
-      `SELECT id, qr, name, email, password, mobile FROM users WHERE email = ?`,
+      `SELECT id, qr, name, email, password, mobile, active FROM users WHERE email = ?`,
       [req.body.email]
     )
   );
