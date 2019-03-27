@@ -370,11 +370,12 @@ var firstEvent = 0,
 function populateDetails() {
   var details = eventData[currentEvent];
   var register = document.querySelector('#register-btn');
+  var start = document.querySelector('#start-btn');
   var unregister = document.querySelector('#unregister-btn');
   var join = document.querySelector('#join-btn');
   var add = document.querySelector('#add-btn');
   var team = document.querySelector('#team-btn');
-  var btns = [register, unregister, join, add, team];
+  var btns = [register, unregister, join, add, team, start];
   btns.forEach(btn => btn.classList.remove('hidden'));
   btns.forEach(btn => btn.classList.add('hidden'));
   document.querySelector('#max-size').innerHTML = details.max_size;
@@ -388,6 +389,9 @@ function populateDetails() {
       join.classList.remove('hidden');
       add.classList.remove('hidden');
     }
+  } else if (details.online) {
+    start.classList.remove('hidden');
+    start.href = details.link;
   } else {
     register.classList.remove('hidden');
   }
