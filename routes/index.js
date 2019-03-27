@@ -44,6 +44,11 @@ router.get(
   auth.verifyEmail
 );
 router.get(
+  '/auth/resendEmail',
+  authenticate,
+  auth.resendEmail
+)
+router.get(
   '/init',
   authenticate,
   init

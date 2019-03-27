@@ -698,3 +698,7 @@ a {
 .btn:hover {
   border: solid thin rgba(255, 255, 255, 0.5);
 }
+
+#resend-btn {
+  margin-right: 120px;
+}

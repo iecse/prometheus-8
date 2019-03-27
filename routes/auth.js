@@ -16,7 +16,7 @@ exports.register = async (req, res) => {
   [err, result] = await to(
     fetch(
       `https://www.google.com/recaptcha/api/siteverify?secret=${
-        process.env.RECAPTCHA_SECRET
+      process.env.RECAPTCHA_SECRET
       }&response=${captchaToken}`
     )
   );
@@ -74,6 +74,39 @@ exports.register = async (req, res) => {
   res.sendSuccess(null, 'Verification Email has been sent');
 };
 
+exports.resendEmail = async (req, res) => {
+  let err, result;
+
+  [err, result] = await to(db.query('SELECT token FROM users WHERE email = ?', [req.session.key.email]));
+  if (err) return res.sendError(err);
+
+  // Send verification mail
+  [err, result] = await to(
+    fetch('https://mail.iecsemanipal.com/prom/emailVerification', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: process.env.MAILER_KEY
+      },
+      body: JSON.stringify({ toEmail: req.session.key.email, token: result[0].token })
+    })
+  );
+  if (err) {
+    console.log('Error', err);
+    return res.sendError(err);
+  }
+  [err, result] = await to(result.json());
+  if (err) {
+    console.log(err);
+    return res.sendError(err);
+  }
+
+  if (!result.success) {
+    return res.sendError();
+  }
+
+  res.sendSuccess(null, 'Verification Email has been sent');
+}
 exports.verifyEmail = async (req, res) => {
   // Validate query params
   if (!req.query['token'] || !req.query['email'])
