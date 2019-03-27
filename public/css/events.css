@@ -174,10 +174,6 @@ canvas {
   }
 }
 
-.event-title {
-  display: block;
-}
-
 .button {
   min-width: 120px;
   margin: 5px;
@@ -499,7 +495,8 @@ a {
   }
 
   #preview {
-    margin-top: 100px;
+    max-height: 80vh;
+    max-width: 100%;
   }
 
   .event-desc {
