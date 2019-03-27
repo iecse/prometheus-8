@@ -235,8 +235,12 @@ function onMouseMove(event) {
   mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
 }
 
+var mobile = false;
+
 onload = () => {
-  document.body.appendChild(renderer.domElement);
+  if (!(window.innerWidth < 1000 && window.innerHeight > window.innerWidth))
+    document.body.appendChild(renderer.domElement);
+  else mobile = true;
 
   window.addEventListener('resize', () => {
     renderer.setSize(window.innerWidth, window.innerHeight);
@@ -381,6 +385,8 @@ function populateDetails() {
   var add = document.querySelector('#add-btn');
   var team = document.querySelector('#team-btn');
   var btns = [register, unregister, join, add, team, start];
+  var eventTitle = document.querySelector('.event-title');
+  eventTitle.innerHTML = details.name;
   btns.forEach(btn => btn.classList.remove('hidden'));
   btns.forEach(btn => btn.classList.add('hidden'));
   document.querySelector('#max-size').innerHTML = details.max_size;
@@ -545,10 +551,17 @@ function profile() {
     scene.remove(userName);
     scene.remove(qr);
     // }, 500);
+    if (mobile) {
+      document.querySelector('#qr').style.display = 'none';
+    }
   } else {
     // console.log(userName);
     scene.add(qr);
     scene.add(userName);
+
+    if (mobile) {
+      document.querySelector('#qr').style.display = 'block';
+    }
   }
   var position = camera.position;
   var target = {
