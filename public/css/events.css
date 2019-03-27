@@ -495,6 +495,7 @@ a {
   }
 
   #preview {
+    margin-top: 10vh;
     max-height: 80vh;
     max-width: 100%;
   }
@@ -532,6 +533,10 @@ a {
     overflow: auto;
     height: calc(100vh - 110px - 100px);
     width: 100%;
+  }
+
+  .event-title {
+    display: block;
   }
 }
 
