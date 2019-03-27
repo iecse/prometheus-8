@@ -554,6 +554,7 @@ function profile() {
     if (mobile) {
       document.querySelector('.event-title').style.display = 'block';
       document.querySelector('#qr').style.display = 'none';
+      document.querySelector('.scan-message').style.display = 'none';
     }
   } else {
     // console.log(userName);
@@ -562,6 +563,7 @@ function profile() {
 
     if (mobile) {
       document.querySelector('.event-title').style.display = 'none';
+      document.querySelector('.scan-message').style.display = 'block';
       document.querySelector('#qr').style.display = 'block';
     }
   }
