@@ -85,26 +85,26 @@ var loader = new THREE.FontLoader();
 var eventDescriptions = [
   `An implementation of a mad house involving mild
    brain teasers, puzzles and fun games. No time for
-    maths and GK, it’s all about the fun.`,
+    maths and GK, it’s all about the fun.<br /><br /> <div class="details">Date - 29th March<br /> Time - 5:30PM<br /> Venue - NLH 303</div>`,
   `An offline coding event where you code efficient
    algorithms to defeat the Syndicate at sea and keep
-    them at bay.`,
+    them at bay.<br /><br /><div class="details"> Date - 29th March<br /> Time - 6:45PM<br /> Venue - NLH 403</div>`,
   `Think you're a code-breaker? Test your skills with
    Cicada, an event with some of the most head
    scratching puzzles you've ever seen. Rack your brains,
     first online and then offline in the final round.`,
   `A fast paced offline coding event where you bet on your
-   coding skills, to rise to the top of the leaderboard.`,
+   coding skills, to rise to the top of the leaderboard. <br /><br /><div class="details"> Date - 30th March<br /> Time - 6:45PM<br /> Venue - NLH 403</div>`,
   `A 3 day online scavenger hunt that'll test your problem
    solving skills to the extreme. It's crazy and highly
     addictive.`,
   `Mystery Room is a non tech event based on the
    quintessential Escape Room! Be it invisible ink or
     confusing riddles, deciphering the clues is the only
-     way out!`,
+     way out! <br /><br /><div class="details"> Date - 30th March<br /> Time - 5:30PM<br /> Venue - NLH 303</div>`,
   `A Graphic Designing competition providing an unparalleled
    opportunity for emerging designers to gain exposure and put
-    their creative skills to the test.`,
+    their creative skills to the test. <br /><br /><div class="details"> Date - 31st March<br /> Time - 10:00AM<br /> Venue - NLH 404</div>`,
   `A 3 day long nerve racking test of your competitive coding
    proficiency where you show off your skills against the top
     coders in the game`
@@ -819,3 +819,4 @@ function addMember() {
 
 var scanner;
 var scanning = true;
+
