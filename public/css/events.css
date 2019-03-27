@@ -452,7 +452,35 @@ a {
   width: 100%;
 }
 
+.scan-message {
+  display: none;
+}
+
+.qr-scanner {
+  position: relative;
+}
+
+.toscan-message {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  text-align: center;
+  color: white;
+  padding: 10px;
+  width: 100%;
+}
+
 @media only screen and (max-width: 1000px) and (orientation: portrait) {
+
+  .scan-message {
+    text-align: center;
+    position: fixed;
+    bottom: 110px;
+    left: 0;
+    color: white;
+    padding: 20px;
+  }
+
   div#main {
     display: none;
   }
@@ -467,7 +495,11 @@ a {
   }
 
   .close {
-    transform: translateY(82px);
+    transform: translateY(10px);
+  }
+
+  #preview {
+    margin-top: 100px;
   }
 
   .event-desc {

@@ -552,6 +552,7 @@ function profile() {
     scene.remove(qr);
     // }, 500);
     if (mobile) {
+      document.querySelector('.event-title').style.display = 'block';
       document.querySelector('#qr').style.display = 'none';
     }
   } else {
@@ -560,6 +561,7 @@ function profile() {
     scene.add(userName);
 
     if (mobile) {
+      document.querySelector('.event-title').style.display = 'none';
       document.querySelector('#qr').style.display = 'block';
     }
   }
