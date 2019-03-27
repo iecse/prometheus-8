@@ -44,7 +44,7 @@ addEventListener('resize', () => {
 var ratio = innerWidth / innerHeight;
 
 function configureScreen() {
-  console.log(ratio);
+  // console.log(ratio);
   if (ratio > 1.45)
     texts.forEach((text, i) => {
       text.scale.set(1, 1, 1);
