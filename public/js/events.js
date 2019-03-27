@@ -711,7 +711,7 @@ function modalClose() {
   var modal = document.querySelector('.modal');
   overlay.classList.remove('active');
   modal.classList.remove('open');
-  document.querySelector('team-members').innerHTML = '';
+  document.querySelector('.team-members').innerHTML = '';
 }
 
 function snackbar(content, success = true) {
