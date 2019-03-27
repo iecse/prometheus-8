@@ -115,7 +115,7 @@ var texts = [];
 var userName, userNameBox;
 
 function createTexts(callback) {
-  loader.load('fonts/helvetiker_regular.typeface.json', function(font) {
+  loader.load('fonts/helvetiker_regular.typeface.json', function (font) {
     var materials = [
       new THREE.MeshPhongMaterial({ color: 0xffffff, flatShading: true }), // front
       new THREE.MeshPhongMaterial({ color: 0xffffff }) // side
@@ -263,8 +263,8 @@ onload = () => {
       e.keyCode === 39 || e.keyCode === 40
         ? true
         : e.keyCode === 37 || e.keyCode === 38
-        ? false
-        : null
+          ? false
+          : null
     )
   );
   document
@@ -291,6 +291,9 @@ onload = () => {
   document.querySelector('.close').addEventListener('click', modalClose);
   document.querySelector('.create-team').addEventListener('submit', createTeam);
   document.querySelector('#team-btn').addEventListener('click', viewTeam);
+
+  document.querySelector('#resend-btn').addEventListener('click', resendMailRequest);
+
   document
     .querySelector('#add-member-btn')
     .addEventListener('click', addMember);
@@ -298,7 +301,7 @@ onload = () => {
   init();
 };
 
-function init(callback = () => {}) {
+function init(callback = () => { }) {
   fetch('/api/init', { credentials: 'include' })
     .then(resp => resp.json())
     .then(data => {
@@ -315,6 +318,8 @@ function init(callback = () => {}) {
         registered: registered.includes(event.id),
         team: teams[event.id]
       }));
+
+      if (!userData.active) showResendMailBtn();
 
       createTexts(() => {
         events[lastEvent].position.x = events[firstEvent].position.x - 25.5;
@@ -469,7 +474,7 @@ function spin(invert) {
 
   new TWEEN.Tween(position)
     .to(target, 500)
-    .onUpdate(function() {
+    .onUpdate(function () {
       camera.position.x = position.x;
       camera.position.y = position.y;
       camera.position.z = position.z;
@@ -600,7 +605,7 @@ function profile() {
 
   new TWEEN.Tween(position)
     .to(target, 500)
-    .onUpdate(function() {
+    .onUpdate(function () {
       camera.position.x = position.x;
       camera.position.y = position.y;
       camera.position.z = position.z;
@@ -648,6 +653,26 @@ function createTeamOpen() {
   modalOpen();
 }
 
+function showResendMailBtn() {
+  // @tharoor, add code here
+  console.log('ON THE FUNCTION')
+  document.querySelector('#resend-btn').classList.remove('hidden');
+}
+
+function resendMailRequest() {
+  fetch('/api/auth/resendEmail', {
+    credentials: 'include',
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+  })
+    .then(resp => resp.json())
+    .then(data => {
+      snackbar(data.msg, data.success);
+    });
+}
+
 function viewTeam() {
   var team = eventData[currentEvent].team;
   var createTeam = document.querySelector('.create-team');
@@ -677,11 +702,11 @@ function viewTeam() {
             <div>${c.name}</div>
             <!-- <div class="cross">&times;</div> -->
             ${
-              userData.id === c.id
-                ? `<div onclick="leaveTeam(${
-                    team.id
-                  })" class="team-btn">Leave</div>`
-                : ''
+            userData.id === c.id
+              ? `<div onclick="leaveTeam(${
+              team.id
+              })" class="team-btn">Leave</div>`
+              : ''
             }
           </div>
           `,
@@ -761,7 +786,7 @@ function addMember() {
     scanPeriod: 1
   });
 
-  scanner.addListener('scan', function(qr) {
+  scanner.addListener('scan', function (qr) {
     if (!scanning) return;
     scanning = false;
     fetch('/api/teams/members/add', {
@@ -783,11 +808,11 @@ function addMember() {
       });
   });
   Instascan.Camera.getCameras()
-    .then(function(cameras) {
+    .then(function (cameras) {
       if (cameras.length > 0) scanner.start(cameras[cameras.length - 1]);
       else console.error('No cameras found');
     })
-    .catch(function(e) {
+    .catch(function (e) {
       console.error(e);
     });
 }
