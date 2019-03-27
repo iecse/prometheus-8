@@ -142,13 +142,19 @@ function createTexts(callback) {
 
     callback();
 
-    var userNameGeometry = new THREE.TextGeometry(userData.name, {
-      font: font,
-      size: (ratio / window.innerWidth) * 600,
-      height: 0.2,
-      curveSegments: 12,
-      bevelEnabled: false
-    });
+    var userNameGeometry = new THREE.TextGeometry(
+      userData.name
+        .split(' ')
+        .slice(0, 2)
+        .join(' '),
+      {
+        font: font,
+        size: (ratio / window.innerWidth) * 600,
+        height: 0.2,
+        curveSegments: 12,
+        bevelEnabled: false
+      }
+    );
 
     var userNameMaterials = [
       new THREE.MeshPhongMaterial({
@@ -705,6 +711,7 @@ function modalClose() {
   var modal = document.querySelector('.modal');
   overlay.classList.remove('active');
   modal.classList.remove('open');
+  document.querySelector('team-members').innerHTML = '';
 }
 
 function snackbar(content, success = true) {
