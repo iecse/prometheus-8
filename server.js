@@ -9,6 +9,7 @@ const session = require('express-session');
 
 const redisStore = require('./config/redis')(session);
 const routes = require('./routes');
+const views = require('./routes/views');
 const responseFormat = require('./utils/responseFormat');
 const sessionSecret = require('./config/session').secret;
 
@@ -31,6 +32,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(responseFormat);
 
 app.use('/api', routes);
+app.use('/', views);
 
 const port = process.env.PORT || 3000;
 

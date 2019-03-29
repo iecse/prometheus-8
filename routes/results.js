@@ -10,7 +10,7 @@ exports.recordResult = async (req, res) => {
             [req.body.qr]
         )
     );
-    if (userData.length === 0) return res.sendError('User not found');
+    if (userData.length === 0) return res.sendError(null, 'User not found', 404);
     if (err) return res.sendError(err);
 
     [err, result] = await to(
@@ -19,17 +19,18 @@ exports.recordResult = async (req, res) => {
             [req.body.event, userData[0].id]
         )
     );
-    if (result.length === 0) return res.sendError('Team not found');
+    if (result.length === 0) return res.sendError(null, 'Team not found', 404);
     if (err) return res.sendError(err);
 
+    let teamID = result[0].id;
     [err, result] = await to(
         db.query(
             'INSERT INTO results VALUES(?, ?, ?, ?)',
-            [result[0].id, req.body.event, req.body.score, req.body.event]
+            [result[0].id, req.body.event, req.body.score, req.body.round]
         )
     );
 
-    res.sendSuccess(result);
+    res.sendSuccess(result, `Score for Team ID ${teamID} recorded`);
 }
 
 exports.updateResult = async (req, res) => {
@@ -43,5 +44,5 @@ exports.updateResult = async (req, res) => {
     );
     if (err) return res.sendError(err);
 
-    res.sendSuccess(result);
+    res.sendSuccess(result, "Score updated");
 }

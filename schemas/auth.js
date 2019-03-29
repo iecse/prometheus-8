@@ -14,6 +14,8 @@ const register = Joi.object({
       .required(),
     mobile: Joi.string()
       .max(200)
+      .required(),
+    captcha: Joi.string()
       .required()
   }).required()
 });

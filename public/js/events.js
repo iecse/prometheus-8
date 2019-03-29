@@ -41,9 +41,10 @@ addEventListener('resize', () => {
   configureScreen();
 });
 
+var ratio = innerWidth / innerHeight;
+
 function configureScreen() {
-  let ratio = innerWidth / innerHeight;
-  console.log(ratio);
+  // console.log(ratio);
   if (ratio > 1.45)
     texts.forEach((text, i) => {
       text.scale.set(1, 1, 1);
@@ -84,26 +85,26 @@ var loader = new THREE.FontLoader();
 var eventDescriptions = [
   `An implementation of a mad house involving mild
    brain teasers, puzzles and fun games. No time for
-    maths and GK, it’s all about the fun.`,
+    maths and GK, it’s all about the fun.<br /><br /> <div class="details">Date - 29th March<br /> Time - 5:30PM<br /> Venue - NLH 303</div>`,
   `An offline coding event where you code efficient
    algorithms to defeat the Syndicate at sea and keep
-    them at bay.`,
+    them at bay.<br /><br /><div class="details"> Date - 30th March<br /> Time - 6:45PM<br /> Venue - NLH 403</div>`,
   `Think you're a code-breaker? Test your skills with
    Cicada, an event with some of the most head
    scratching puzzles you've ever seen. Rack your brains,
     first online and then offline in the final round.`,
   `A fast paced offline coding event where you bet on your
-   coding skills, to rise to the top of the leaderboard.`,
+   coding skills, to rise to the top of the leaderboard. <br /><br /><div class="details"> Date - 29th March<br /> Time - 6:45PM<br /> Venue - NLH 403</div>`,
   `A 3 day online scavenger hunt that'll test your problem
    solving skills to the extreme. It's crazy and highly
     addictive.`,
   `Mystery Room is a non tech event based on the
    quintessential Escape Room! Be it invisible ink or
     confusing riddles, deciphering the clues is the only
-     way out!`,
+     way out! <br /><br /><div class="details"> Date - 30th March<br /> Time - 5:30PM<br /> Venue - NLH 303</div>`,
   `A Graphic Designing competition providing an unparalleled
    opportunity for emerging designers to gain exposure and put
-    their creative skills to the test.`,
+    their creative skills to the test. <br /><br /><div class="details"> Date - 31st March<br /> Time - 10:00AM<br /> Venue - NLH 404</div>`,
   `A 3 day long nerve racking test of your competitive coding
    proficiency where you show off your skills against the top
     coders in the game`
@@ -113,58 +114,68 @@ var texts = [];
 
 var userName, userNameBox;
 
-loader.load('fonts/helvetiker_regular.typeface.json', function(font) {
-  var materials = [
-    new THREE.MeshPhongMaterial({ color: 0xffffff, flatShading: true }), // front
-    new THREE.MeshPhongMaterial({ color: 0xffffff }) // side
-  ];
+function createTexts(callback) {
+  loader.load('fonts/helvetiker_regular.typeface.json', function (font) {
+    var materials = [
+      new THREE.MeshPhongMaterial({ color: 0xffffff, flatShading: true }), // front
+      new THREE.MeshPhongMaterial({ color: 0xffffff }) // side
+    ];
 
-  eventNames.forEach((eventname, i) => {
-    var textGeometry = new THREE.TextGeometry(eventname, {
-      font: font,
-      size: 1,
-      height: 0.08,
-      curveSegments: 12,
-      bevelEnabled: false
+    eventNames.forEach((eventname, i) => {
+      var textGeometry = new THREE.TextGeometry(eventname, {
+        font: font,
+        size: 1,
+        height: 0.08,
+        curveSegments: 12,
+        bevelEnabled: false
+      });
+
+      var textGeo = new THREE.BufferGeometry().fromGeometry(textGeometry);
+      var textMesh1 = new THREE.Mesh(textGeo, materials);
+      textMesh1.rotation.y = 0.1;
+      textMesh1.position.x = events[i].position.x - 16;
+      textMesh1.position.y = events[i].position.y;
+      textMesh1.position.z = events[i].position.z;
+      texts.push(textMesh1);
+      scene.add(textMesh1);
     });
 
-    var textGeo = new THREE.BufferGeometry().fromGeometry(textGeometry);
-    var textMesh1 = new THREE.Mesh(textGeo, materials);
-    textMesh1.rotation.y = 0.1;
-    textMesh1.position.x = events[i].position.x - 16;
-    textMesh1.position.y = events[i].position.y;
-    textMesh1.position.z = events[i].position.z;
-    texts.push(textMesh1);
-    scene.add(textMesh1);
+    callback();
+
+    var userNameGeometry = new THREE.TextGeometry(
+      userData.name
+        .split(' ')
+        .slice(0, 2)
+        .join(' '),
+      {
+        font: font,
+        size: (ratio / window.innerWidth) * 600,
+        height: 0.2,
+        curveSegments: 12,
+        bevelEnabled: false
+      }
+    );
+
+    var userNameMaterials = [
+      new THREE.MeshPhongMaterial({
+        color: 0xffffff,
+        flatShading: THREE.FlatShading
+      }), // front
+      new THREE.MeshPhongMaterial({
+        color: 0x550055,
+        flatShading: THREE.FlatShading
+      }) // side
+    ];
+
+    userNameGeo = new THREE.BufferGeometry().fromGeometry(userNameGeometry);
+    userName = new THREE.Mesh(userNameGeo, userNameMaterials);
+    var box = new THREE.Box3().setFromObject(userName);
+    userName.position.x = 0;
+    userName.position.y = 0;
+    userName.position.z = -25;
+    userNameBox = new THREE.Box3().setFromObject(userName);
   });
-
-  var userNameGeometry = new THREE.TextGeometry('Pranav Tharoor', {
-    font: font,
-    size: 0.8,
-    height: 0.2,
-    curveSegments: 12,
-    bevelEnabled: false
-  });
-
-  var userNameMaterials = [
-    new THREE.MeshPhongMaterial({
-      color: 0xffffff,
-      flatShading: THREE.FlatShading
-    }), // front
-    new THREE.MeshPhongMaterial({
-      color: 0x550055,
-      flatShading: THREE.FlatShading
-    }) // side
-  ];
-
-  userNameGeo = new THREE.BufferGeometry().fromGeometry(userNameGeometry);
-  userName = new THREE.Mesh(userNameGeo, userNameMaterials);
-  var box = new THREE.Box3().setFromObject(userName);
-  userName.position.x = 0;
-  userName.position.y = 0;
-  userName.position.z = -25;
-  userNameBox = new THREE.Box3().setFromObject(userName);
-});
+}
 
 var lights = [];
 lights[0] = new THREE.DirectionalLight(0xffffff, 1);
@@ -230,8 +241,12 @@ function onMouseMove(event) {
   mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
 }
 
+var mobile = false;
+
 onload = () => {
-  document.body.appendChild(renderer.domElement);
+  if (!(window.innerWidth < 1000 && window.innerHeight > window.innerWidth))
+    document.body.appendChild(renderer.domElement);
+  else mobile = true;
 
   window.addEventListener('resize', () => {
     renderer.setSize(window.innerWidth, window.innerHeight);
@@ -248,22 +263,22 @@ onload = () => {
       e.keyCode === 39 || e.keyCode === 40
         ? true
         : e.keyCode === 37 || e.keyCode === 38
-        ? false
-        : null
+          ? false
+          : null
     )
   );
+  document
+    .querySelector('#right-arrow')
+    .addEventListener('click', e => spin(true));
+  document
+    .querySelector('#left-arrow')
+    .addEventListener('click', e => spin(false));
   document.querySelector('.event-desc').innerHTML =
     eventDescriptions[currentEvent];
   document.querySelector('.event-name').innerHTML = eventNames[currentEvent];
   // document.addEventListener("click", e => spin(e.x > window.innerWidth / 2));
 
-  events[lastEvent].position.x = events[firstEvent].position.x - 25.5;
-  texts[lastEvent].position.x = texts[firstEvent].position.x - 25.5;
-  firstEvent = --firstEvent % events.length;
-  lastEvent = --lastEvent % events.length;
-  if (firstEvent < 0) firstEvent = events.length - 1;
-  if (lastEvent < 0) lastEvent = events.length - 1;
-
+  document.querySelector('.home').addEventListener('click', profile);
   document.querySelector('.profile-icon').addEventListener('click', profile);
   document.querySelector('#join-btn').addEventListener('click', profile);
   document.querySelector('#add-btn').addEventListener('click', createTeamOpen);
@@ -276,6 +291,9 @@ onload = () => {
   document.querySelector('.close').addEventListener('click', modalClose);
   document.querySelector('.create-team').addEventListener('submit', createTeam);
   document.querySelector('#team-btn').addEventListener('click', viewTeam);
+
+  document.querySelector('#resend-btn').addEventListener('click', resendMailRequest);
+
   document
     .querySelector('#add-member-btn')
     .addEventListener('click', addMember);
@@ -283,11 +301,11 @@ onload = () => {
   init();
 };
 
-function init(callback = () => {}) {
+function init(callback = () => { }) {
   fetch('/api/init', { credentials: 'include' })
     .then(resp => resp.json())
     .then(data => {
-      if (!data.data.logged_in) return (window.location.href = '/auth.html');
+      if (!data.data.logged_in) return (window.location.href = '/auth');
       eventData = data.data.events.sort(
         (event1, event2) => event1.name > event2.name
       );
@@ -300,16 +318,28 @@ function init(callback = () => {}) {
         registered: registered.includes(event.id),
         team: teams[event.id]
       }));
-      loaded = true;
-      var loadingScreen = document.querySelector('.overlay.loading');
-      if (loadingScreen) loadingScreen.classList.remove('loading');
+
+      if (!userData.active) showResendMailBtn();
+
+      createTexts(() => {
+        events[lastEvent].position.x = events[firstEvent].position.x - 25.5;
+        texts[lastEvent].position.x = texts[firstEvent].position.x - 25.5;
+        firstEvent = --firstEvent % events.length;
+        lastEvent = --lastEvent % events.length;
+        if (firstEvent < 0) firstEvent = events.length - 1;
+        if (lastEvent < 0) lastEvent = events.length - 1;
+
+        loaded = true;
+        var loadingScreen = document.querySelector('.overlay.loading');
+        if (loadingScreen) loadingScreen.classList.remove('loading');
+      });
 
       qr = new QRious({
         element: document.getElementById('qr'),
         value: userData.qr,
         background: 'white',
         foreground: 'black',
-        backgroundAlpha: 0.5,
+        backgroundAlpha: 1,
         foregroundAlpha: 1,
         level: 'L',
         mime: 'image/png',
@@ -362,24 +392,41 @@ var firstEvent = 0,
 function populateDetails() {
   var details = eventData[currentEvent];
   var register = document.querySelector('#register-btn');
+  var start = document.querySelector('#start-btn');
   var unregister = document.querySelector('#unregister-btn');
   var join = document.querySelector('#join-btn');
   var add = document.querySelector('#add-btn');
   var team = document.querySelector('#team-btn');
-  var btns = [register, unregister, join, add, team];
+  var btns = [register, unregister, join, add, team, start];
+  var eventTitle = document.querySelector('.event-title');
+  eventTitle.innerHTML = details.name;
   btns.forEach(btn => btn.classList.remove('hidden'));
   btns.forEach(btn => btn.classList.add('hidden'));
   document.querySelector('#max-size').innerHTML = details.max_size;
   document.querySelector('#min-size').innerHTML = details.min_size;
+  document.querySelector('#to-item').classList.remove('hidden');
+  document.querySelector('#max-size').classList.remove('hidden');
+
+  if (details.max_size <= 1) {
+    document.querySelector('#to-item').classList.add('hidden');
+    document.querySelector('#max-size').classList.add('hidden');
+  }
+
   if (details.registered) {
     unregister.classList.remove('hidden');
 
     if (details.team) {
       team.classList.remove('hidden');
-    } else {
+    } else if (details.max_size > 1) {
       join.classList.remove('hidden');
       add.classList.remove('hidden');
+    } else if (details.max_size <= 1) {
+      document.querySelector('#to-item').classList.add('hidden');
+      document.querySelector('#max-size').classList.add('hidden');
     }
+  } else if (details.online) {
+    start.classList.remove('hidden');
+    start.href = details.link;
   } else {
     register.classList.remove('hidden');
   }
@@ -427,7 +474,7 @@ function spin(invert) {
 
   new TWEEN.Tween(position)
     .to(target, 500)
-    .onUpdate(function() {
+    .onUpdate(function () {
       camera.position.x = position.x;
       camera.position.y = position.y;
       camera.position.z = position.z;
@@ -497,6 +544,22 @@ var profileOpening = false;
 
 var doInit = false;
 
+function showBack() {
+  var logout = document.querySelector('.logout');
+  var back = document.querySelector('.home');
+  logout.classList.remove('hidden');
+  back.classList.remove('hidden');
+  logout.classList.add('hidden');
+}
+
+function showLogout() {
+  var logout = document.querySelector('.logout');
+  var back = document.querySelector('.home');
+  logout.classList.remove('hidden');
+  back.classList.remove('hidden');
+  back.classList.add('hidden');
+}
+
 function profile() {
   if (profileOpen) init();
   profileOpening = true;
@@ -507,15 +570,26 @@ function profile() {
   userName.position.x = qr.position.x - userNameBox.max.x / 2;
   userName.position.y = camera.position.y - 2;
   userName.rotation.x = -0.2;
-  if (profileOpen)
-    setTimeout(() => {
-      scene.remove(qr);
-      scene.remove(userName);
-    }, 500);
-  else {
+  if (profileOpen) {
+    // setTimeout(() => {
+    scene.remove(userName);
+    scene.remove(qr);
+    // }, 500);
+    if (mobile) {
+      document.querySelector('.event-title').style.display = 'block';
+      document.querySelector('#qr').style.display = 'none';
+      document.querySelector('.scan-message').style.display = 'none';
+    }
+  } else {
     // console.log(userName);
     scene.add(qr);
     scene.add(userName);
+
+    if (mobile) {
+      document.querySelector('.event-title').style.display = 'none';
+      document.querySelector('.scan-message').style.display = 'block';
+      document.querySelector('#qr').style.display = 'block';
+    }
   }
   var position = camera.position;
   var target = {
@@ -526,9 +600,12 @@ function profile() {
   if (profileOpen) showData(0);
   else hideData();
 
+  if (profileOpen) showLogout();
+  else showBack();
+
   new TWEEN.Tween(position)
     .to(target, 500)
-    .onUpdate(function() {
+    .onUpdate(function () {
       camera.position.x = position.x;
       camera.position.y = position.y;
       camera.position.z = position.z;
@@ -576,6 +653,26 @@ function createTeamOpen() {
   modalOpen();
 }
 
+function showResendMailBtn() {
+  // @tharoor, add code here
+  console.log('ON THE FUNCTION')
+  document.querySelector('#resend-btn').classList.remove('hidden');
+}
+
+function resendMailRequest() {
+  fetch('/api/auth/resendEmail', {
+    credentials: 'include',
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+  })
+    .then(resp => resp.json())
+    .then(data => {
+      snackbar(data.msg, data.success);
+    });
+}
+
 function viewTeam() {
   var team = eventData[currentEvent].team;
   var createTeam = document.querySelector('.create-team');
@@ -605,11 +702,11 @@ function viewTeam() {
             <div>${c.name}</div>
             <!-- <div class="cross">&times;</div> -->
             ${
-              userData.id === c.id
-                ? `<div onclick="leaveTeam(${
-                    team.id
-                  })" class="team-btn">Leave</div>`
-                : ''
+            userData.id === c.id
+              ? `<div onclick="leaveTeam(${
+              team.id
+              })" class="team-btn">Leave</div>`
+              : ''
             }
           </div>
           `,
@@ -650,6 +747,7 @@ function modalClose() {
   var modal = document.querySelector('.modal');
   overlay.classList.remove('active');
   modal.classList.remove('open');
+  document.querySelector('.team-members').innerHTML = '';
 }
 
 function snackbar(content, success = true) {
@@ -688,7 +786,7 @@ function addMember() {
     scanPeriod: 1
   });
 
-  scanner.addListener('scan', function(qr) {
+  scanner.addListener('scan', function (qr) {
     if (!scanning) return;
     scanning = false;
     fetch('/api/teams/members/add', {
@@ -710,14 +808,15 @@ function addMember() {
       });
   });
   Instascan.Camera.getCameras()
-    .then(function(cameras) {
+    .then(function (cameras) {
       if (cameras.length > 0) scanner.start(cameras[cameras.length - 1]);
       else console.error('No cameras found');
     })
-    .catch(function(e) {
+    .catch(function (e) {
       console.error(e);
     });
 }
 
 var scanner;
 var scanning = true;
+
