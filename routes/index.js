@@ -6,6 +6,7 @@ const auth = require('./auth');
 const init = require('./init');
 const events = require('./events');
 const teams = require('./teams');
+const results = require('./results');
 
 const redirectIfLoggedIn = (req, res, next) => {
   if (req.session.key) return res.redirect('/events');
@@ -14,6 +15,11 @@ const redirectIfLoggedIn = (req, res, next) => {
 
 const authenticate = (req, res, next) => {
   if (req.session.key) return next();
+  return res.redirect('/auth');
+};
+
+const isAdmin = (req, res, next) => {
+  if (req.session.key && req.session.key.access === 10) return next();
   return res.redirect('/auth');
 };
 
@@ -93,6 +99,19 @@ router.get(
   userIsVerified,
   validator(schemas.teams.leave),
   teams.leave
+);
+
+router.post(
+  '/results/record',
+  isAdmin,
+  validator(schemas.results.recordResult),
+  results.recordResult
+);
+router.post(
+  '/results/update',
+  isAdmin,
+  validator(schemas.results.updateResult),
+  results.updateResult
 );
 
 module.exports = router;

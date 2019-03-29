@@ -142,7 +142,7 @@ exports.login = async (req, res) => {
 
   [err, user] = await to(
     db.query(
-      `SELECT id, qr, name, email, password, mobile, active FROM users WHERE email = ?`,
+      `SELECT id, qr, name, email, password, mobile, active, access FROM users WHERE email = ?`,
       [req.body.email]
     )
   );
