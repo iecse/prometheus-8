@@ -29,6 +29,9 @@ exports.recordResult = async (req, res) => {
             [result[0].id, req.body.event, req.body.score, req.body.round]
         )
     );
+    if (err && err.code === 'ER_DUP_ENTRY')
+        return res.sendSuccess(result, `Score for Team ID ${teamID} recorded`);
+    if (err) return res.sendError(err, "Internal Server Error", 500);
 
     res.sendSuccess(result, `Score for Team ID ${teamID} recorded`);
 }
